@@ -10,7 +10,7 @@ This plugin allows you to get blocks, sessions, styles and products from a local
 
 == Description ==
 
-Using the Magento WordPress Integration plugin you will be able to add any Magento blocks to your WordPress theme – including ones you have created yourself and static blocks created through the Magento admin area. You can also add any number of Magento products to your WordPress posts and pages.
+Using the Magento WordPress Integration plugin you will be able to add any Magento blocks to your WordPress theme, including ones you have created yourself and static blocks created through the Magento admin area. You can also add any number of Magento products to your WordPress posts and pages.
 
 [Support](http://www.jckemp.com/plugins/magento-wordpress-integration/) |
 [FAQ](http://www.jckemp.com/plugins/magento-wordpress-integration/#comments)
