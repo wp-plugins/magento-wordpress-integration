@@ -1,6 +1,6 @@
 /* CSS Document */
 
-.toplevel_page_jk_mwi-jk_mwi ul.tabs {
+.toplevel_page_magento-wordpress-integration-jk_mwi ul.tabs {
 	margin: 20px 0 0;
 	padding: 0;
 	float: left;
@@ -10,7 +10,7 @@
 	border-left: 1px solid #E3E3E3;
 	width: 100%;
 }
-.toplevel_page_jk_mwi-jk_mwi ul.tabs li {
+.toplevel_page_magento-wordpress-integration-jk_mwi ul.tabs li {
 	float: left;
 	margin: 0;
 	padding: 0;
@@ -23,7 +23,7 @@
 	position: relative;
 	background: #f1f1f1;
 }
-.toplevel_page_jk_mwi-jk_mwi ul.tabs li a {
+.toplevel_page_magento-wordpress-integration-jk_mwi ul.tabs li a {
 	text-decoration: none;
 	color: #333;
 	display: block;
@@ -32,20 +32,20 @@
 	border: 1px solid #fff; /*--Gives the bevel look with a 1px white border inside the list item--*/
 	outline: none;
 }
-.toplevel_page_jk_mwi-jk_mwi ul.tabs li a:hover {
+.toplevel_page_magento-wordpress-integration-jk_mwi ul.tabs li a:hover {
 	color: #29AADE;
 }
-html .toplevel_page_jk_mwi-jk_mwi ul.tabs li.active, html .toplevel_page_jk_mwi-jk_mwi ul.tabs li.active a:hover  { /*--Makes sure that the active tab does not listen to the hover properties--*/
+html .toplevel_page_magento-wordpress-integration-jk_mwi ul.tabs li.active, html .toplevel_page_magento-wordpress-integration-jk_mwi ul.tabs li.active a:hover  { /*--Makes sure that the active tab does not listen to the hover properties--*/
 	background: #fff;
 	border-bottom: 1px solid #fff; /*--Makes the active tab look like it's connected with its content--*/
     color: #29AADE;
 }
 
-html .toplevel_page_jk_mwi-jk_mwi ul.tabs li.active a {
+html .toplevel_page_magento-wordpress-integration-jk_mwi ul.tabs li.active a {
     color: #29AADE;
 }
 
-.toplevel_page_jk_mwi-jk_mwi .tab_container {
+.toplevel_page_magento-wordpress-integration-jk_mwi .tab_container {
 	border: 1px solid #E3E3E3;
 	border-top: none;
 	overflow: hidden;
@@ -54,7 +54,7 @@ html .toplevel_page_jk_mwi-jk_mwi ul.tabs li.active a {
 	background: #fff;
     margin:0 0 20px
 }
-.toplevel_page_jk_mwi-jk_mwi .tab_content {
+.toplevel_page_magento-wordpress-integration-jk_mwi .tab_content {
 	padding: 20px;
     display:none;
     -webkit-border-bottom-right-radius: 5px;
@@ -65,19 +65,19 @@ html .toplevel_page_jk_mwi-jk_mwi ul.tabs li.active a {
     border-bottom-left-radius: 5px;
     overflow:hidden
 }
-.toplevel_page_jk_mwi-jk_mwi .first { display:block; }
+.toplevel_page_magento-wordpress-integration-jk_mwi .first { display:block; }
 
-.toplevel_page_jk_mwi-jk_mwi th { text-align:left }
+.toplevel_page_magento-wordpress-integration-jk_mwi th { text-align:left }
 
-.toplevel_page_jk_mwi-jk_mwi .wg_left, .toplevel_page_jk_mwi-jk_mwi .wg_right { float:left; display:inline; margin:0 30px 0 0; width:350px }
+.toplevel_page_magento-wordpress-integration-jk_mwi .wg_left, .toplevel_page_magento-wordpress-integration-jk_mwi .wg_right { float:left; display:inline; margin:0 30px 0 0; width:350px }
 
-.toplevel_page_jk_mwi-jk_mwi hr {
+.toplevel_page_magento-wordpress-integration-jk_mwi hr {
     border:none;
     border-bottom:1px solid #ddd;
     margin: 25px 0 30px;
 }
 
-.toplevel_page_jk_mwi-jk_mwi code {
+.toplevel_page_magento-wordpress-integration-jk_mwi code {
     background: none repeat scroll 0 0 #333333;
     border: 1px solid #000000;
     border-radius: 4px 4px 4px 4px;
@@ -86,12 +86,12 @@ html .toplevel_page_jk_mwi-jk_mwi ul.tabs li.active a {
     margin: 5px 0;
     padding: 3px 8px;
 }
-.toplevel_page_jk_mwi-jk_mwi code strong { color:#fff; text-decoration:underline }
-.toplevel_page_jk_mwi-jk_mwi dd { 
+.toplevel_page_magento-wordpress-integration-jk_mwi code strong { color:#fff; text-decoration:underline }
+.toplevel_page_magento-wordpress-integration-jk_mwi dd { 
     margin:10px 10px 15px;
 }
 
-.toplevel_page_jk_mwi-jk_mwi #footer {
+.toplevel_page_magento-wordpress-integration-jk_mwi #footer {
     display:none
 }
 
