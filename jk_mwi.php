@@ -654,7 +654,7 @@ function jk_mwi_showAdminMessages()
 	
 	if(!file_exists($jk_mwi_magepath_filename)) {
 	
-    	jk_mwi_showMessage("You have enabled Magento Wordpress Integration, but before you enter the path to your Magento installation in the settings area, be sure to remove the __() function by following these instructions!", true);
+    	jk_mwi_showMessage("You have enabled Magento Wordpress Integration, but before you enter the path to your Magento installation in the settings area, be sure to remove the __() function by following <a href='http://www.jckemp.com/plugins/magento-wordpress-integration/' title='Disable the function!'>these instructions</a>!", true);
 	
 	}
 	
