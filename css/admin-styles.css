@@ -1,0 +1,100 @@
+/* CSS Document */
+
+.toplevel_page_jk_mwi-jk_mwi ul.tabs {
+	margin: 20px 0 0;
+	padding: 0;
+	float: left;
+	list-style: none;
+	height: 27px; /*--Set height of tabs--*/
+	border-bottom: 1px solid #E3E3E3;
+	border-left: 1px solid #E3E3E3;
+	width: 100%;
+}
+.toplevel_page_jk_mwi-jk_mwi ul.tabs li {
+	float: left;
+	margin: 0;
+	padding: 0;
+	height: 26px; /*--Subtract 1px from the height of the unordered list--*/
+	line-height: 26px; /*--Vertically aligns the text within the tab--*/
+	border: 1px solid #E3E3E3;
+	border-left: none;
+	margin-bottom: -1px; /*--Pull the list item down 1px--*/
+	overflow: hidden;
+	position: relative;
+	background: #f1f1f1;
+}
+.toplevel_page_jk_mwi-jk_mwi ul.tabs li a {
+	text-decoration: none;
+	color: #333;
+	display: block;
+	font-size: 12px;
+	padding: 0 10px;
+	border: 1px solid #fff; /*--Gives the bevel look with a 1px white border inside the list item--*/
+	outline: none;
+}
+.toplevel_page_jk_mwi-jk_mwi ul.tabs li a:hover {
+	color: #29AADE;
+}
+html .toplevel_page_jk_mwi-jk_mwi ul.tabs li.active, html .toplevel_page_jk_mwi-jk_mwi ul.tabs li.active a:hover  { /*--Makes sure that the active tab does not listen to the hover properties--*/
+	background: #fff;
+	border-bottom: 1px solid #fff; /*--Makes the active tab look like it's connected with its content--*/
+    color: #29AADE;
+}
+
+html .toplevel_page_jk_mwi-jk_mwi ul.tabs li.active a {
+    color: #29AADE;
+}
+
+.toplevel_page_jk_mwi-jk_mwi .tab_container {
+	border: 1px solid #E3E3E3;
+	border-top: none;
+	overflow: hidden;
+	clear: both;
+	float: left; width: 100%;
+	background: #fff;
+    margin:0 0 20px
+}
+.toplevel_page_jk_mwi-jk_mwi .tab_content {
+	padding: 20px;
+    display:none;
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    overflow:hidden
+}
+.toplevel_page_jk_mwi-jk_mwi .first { display:block; }
+
+.toplevel_page_jk_mwi-jk_mwi th { text-align:left }
+
+.toplevel_page_jk_mwi-jk_mwi .wg_left, .toplevel_page_jk_mwi-jk_mwi .wg_right { float:left; display:inline; margin:0 30px 0 0; width:350px }
+
+.toplevel_page_jk_mwi-jk_mwi hr {
+    border:none;
+    border-bottom:1px solid #ddd;
+    margin: 25px 0 30px;
+}
+
+.toplevel_page_jk_mwi-jk_mwi code {
+    background: none repeat scroll 0 0 #333333;
+    border: 1px solid #000000;
+    border-radius: 4px 4px 4px 4px;
+    color: #DDDDDD;
+    display: inline-block;
+    margin: 5px 0;
+    padding: 3px 8px;
+}
+.toplevel_page_jk_mwi-jk_mwi code strong { color:#fff; text-decoration:underline }
+.toplevel_page_jk_mwi-jk_mwi dd { 
+    margin:10px 10px 15px;
+}
+
+.toplevel_page_jk_mwi-jk_mwi #footer {
+    display:none
+}
+
+p.submit {
+    clear:both
+}
