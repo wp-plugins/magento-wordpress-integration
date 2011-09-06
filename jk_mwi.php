@@ -277,7 +277,6 @@ function jk_mwi_magento_frontend() {
 		$jk_mwi_block_newsletter = $jk_mwi_block->createBlock('newsletter/subscribe')->setTemplate("newsletter/subscribe.phtml")->toHtml();
 		$jk_mwi_block_topmenu = $jk_mwi_block->createBlock('catalog/navigation')->setTemplate("catalog/navigation/top.phtml")->toHtml();
 		$jk_mwi_block_wishlist = $jk_mwi_block->createBlock('wishlist/customer_sidebar')->setTemplate("wishlist/sidebar.phtml")->toHtml();
-		$jk_mwi_block_topcart = $jk_mwi_block->createBlock('checkout/cart_sidebar')->setTemplate("checkout/cart/topcart.phtml")->toHtml();
 		
 		
 		// LOOP THROUGH CUSTOM BLOCKS
