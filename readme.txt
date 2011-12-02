@@ -15,6 +15,8 @@ Using the Magento WordPress Integration plugin you will be able to add any Magen
 [Support](http://www.jckemp.com/plugins/magento-wordpress-integration/) |
 [FAQ](http://www.jckemp.com/plugins/magento-wordpress-integration/#comments)
 
+If you are using this plugin, then you may also be interested in my Magento extension - [Single Sign-on for Magento and Wordpress](http://codecanyon.net/item/single-signon-for-magento-and-wordpress/861453?ref=jamesckemp).
+
 The Magento WordPress Integration Plugin allows you to to the following:
 
 *   Bring out any of the default Magento Blocks in your WordPress theme.
