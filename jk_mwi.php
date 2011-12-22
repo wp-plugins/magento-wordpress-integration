@@ -587,7 +587,7 @@ function jk_mwi_block_name( $jk_mwi_block_path ) {
 
 // Add Styles
 $jk_mwi_product_options = get_option('jk_mwi_product_options');
-if($jk_mwi_product_options['styles'] == 1) {
+if(isset($jk_mwi_product_options['styles']) && $jk_mwi_product_options['styles'] == 1) {
 
 add_action('wp_print_styles', 'jk_mwi_styles');
 
