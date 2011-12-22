@@ -6,7 +6,7 @@
 Plugin Name: Magento Wordpress Integration
 Plugin URI: http://www.jckemp.com/plugins/magento-wordpress-integration/
 Description: Magento Wordpress Integration allows you to seamlessly integrate blocks from your Magento installation into your Wordpress theme
-Version: 1.0.1
+Version: 1.0.2
 Author: James C Kemp
 Author URI: http://www.jckemp.com/
 License: GPLv2
@@ -642,7 +642,7 @@ function jk_mwi_showMessage($message, $errormsg = false)
 
 function jk_mwi_showAdminMessages()
 {
-	if($_POST['jk_mwi_hidden'] == 'Y') {
+	if(isset($_POST['jk_mwi_hidden']) && $_POST['jk_mwi_hidden'] == 'Y') {
 	
 		$jk_mwi_mage = $_POST['jk_mwi_magepath'];	
 		$jk_mwi_magepath_filename = $_SERVER['DOCUMENT_ROOT'].$jk_mwi_mage.'/app/Mage.php';
