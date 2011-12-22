@@ -114,7 +114,7 @@ function jk_mwi_setoptions() {
 	add_option( 'jk_mwi_product_options', $jk_mwi_product_options );
 	
 	$message = get_bloginfo('url');	
-	wp_mail('me@jckemp.com', 'Magento WordPress plugin Activation', $message);
+	wp_mail('plugins@jckemp.com', 'Magento WordPress Plugin Activation', $message);
 			
 }
 
