@@ -3,7 +3,7 @@ Contributors: jamesckemp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMUSAPCTF88&lc=US&item_name=James%20Kemp&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: magento,wordpress,blocks,integration
 Requires at least: 2.8
-Tested up to: 3.1.2
+Tested up to: 3.3
 Stable tag: trunk
 
 This plugin allows you to get blocks, sessions, styles and products from a local Magento installation, into your WordPress theme.
