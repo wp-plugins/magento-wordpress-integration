@@ -1,4 +1,4 @@
-<?php if($_POST['jk_mwi_hidden'] == 'Y') {
+<?php if(isset($_POST['jk_mwi_hidden']) && $_POST['jk_mwi_hidden'] == 'Y') {
 	
 	$jk_mwi_mage = $_POST['jk_mwi_magepath'];			
 	$jk_mwi_magepath_filename = $_SERVER['DOCUMENT_ROOT'].$jk_mwi_mage.'/app/Mage.php';

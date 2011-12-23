@@ -6,7 +6,7 @@
 Plugin Name: Magento Wordpress Integration
 Plugin URI: http://www.jckemp.com/plugins/magento-wordpress-integration/
 Description: Magento Wordpress Integration allows you to seamlessly integrate blocks from your Magento installation into your Wordpress theme
-Version: 1.0.2
+Version: 1.0.3
 Author: James C Kemp
 Author URI: http://www.jckemp.com/
 License: GPLv2
@@ -512,7 +512,7 @@ function jk_mwi($jk_mwi_vwg_var) {
 }
 
 add_action( 'admin_init', 'jk_mwi_add_custom_box', 1 );
-add_action( 'save_post', 'jk_mwi_save_postdata' );
+add_action( 'edit_post', 'jk_mwi_save_postdata' );
 
 function jk_mwi_add_custom_box() {
     add_meta_box( 
@@ -544,6 +544,8 @@ function jk_mwi_inner_custom_box( ) {
 
 function jk_mwi_save_postdata( $post_id ) {
 	
+	global $post;
+	
   $jk_mwi_product_sku = get_post_meta($post->ID, 'jk_mwi_product_sku', true);
   
   if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
@@ -567,10 +569,8 @@ function jk_mwi_save_postdata( $post_id ) {
 
   $jk_mwi_fielddata = $_POST['jk_mwi_new_field'];
         
-	if ($jk_mwi_fielddata && $jk_mwi_fielddata != $jk_mwi_product_sku) {
+	if (isset($jk_mwi_fielddata) && $jk_mwi_fielddata != $jk_mwi_product_sku) {
 		update_post_meta($post_id, 'jk_mwi_product_sku', $jk_mwi_fielddata);
-	} elseif ('' == $new && $old) {
-		add_post_meta($post_id, 'jk_mwi_product_sku', $jk_mwi_fielddata, true);
 	}
 	
 }
