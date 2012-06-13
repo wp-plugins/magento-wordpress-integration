@@ -52,44 +52,46 @@
 							$shortcode .= '<div class="product_desc">'.$product_data->getShortDescription().'</div>';
 						}				
 						
-						// #### Price #### //						
-						if($product_data->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_BUNDLE && $product_data->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
-				
-							// Don't show price if it's a grouped or bundle product
-						
-							// #####
-							// The below code checks if the price has been explicitly set per website, to avoid converting at normal conversion rates
-							// #####							
-							$default_sv = jck_mwi::getValue('default_sv', 'default');				
-							$stores = $app->getStores();				
-							foreach($stores as $store) {					
-								if($store->getCode() == $default_sv) { // finding the store if of the default store, to get the default product price					
-									$default_store_id = $store->getStoreId();						
-									$productId = $product_data->getId(); // get current product ID
-									$product = Mage::getModel('catalog/product')->setStoreId($default_store_id)->load($productId); // Check price in default store
-									$defaultPrice = $product->getFinalPrice();											
-								}					
-							}
+						if($price === true) {
+							// #### Price #### //						
+							if($product_data->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_BUNDLE && $product_data->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
+					
+								// Don't show price if it's a grouped or bundle product
 							
-							if($product_data->getFinalPrice() != $defaultPrice) {
+								// #####
+								// The below code checks if the price has been explicitly set per website, to avoid converting at normal conversion rates
+								// #####							
+								$default_sv = jck_mwi::getValue('default_sv', 'default');				
+								$stores = $app->getStores();				
+								foreach($stores as $store) {					
+									if($store->getCode() == $default_sv) { // finding the store if of the default store, to get the default product price					
+										$default_store_id = $store->getStoreId();						
+										$productId = $product_data->getId(); // get current product ID
+										$product = Mage::getModel('catalog/product')->setStoreId($default_store_id)->load($productId); // Check price in default store
+										$defaultPrice = $product->getFinalPrice();											
+									}					
+								}
 								
-								$options = array();
-								//$options = array( 'position' => 16 ); // Set currency sign to the right.
-								$price = $app->getStore()->getCurrentCurrency()->format($product_data->getPrice(), $options, true);
+								if($product_data->getFinalPrice() != $defaultPrice) {
 									
-							} else {
-								
-								$price = Mage::helper('core')->currencyByStore($product_data->getFinalPrice(),$storeId,true,false);	
-								
-							}
-							$shortcode.= '<div class="price_box">';
-							$shortcode.= '<span class="price">'.$price.'</span>';
-							$shortcode.= '</div>';
-							// #####
-							// End price check
-							// #####		
-						
-						} // End check if grouped or bundle
+									$options = array();
+									//$options = array( 'position' => 16 ); // Set currency sign to the right.
+									$price = $app->getStore()->getCurrentCurrency()->format($product_data->getPrice(), $options, true);
+										
+								} else {
+									
+									$price = Mage::helper('core')->currencyByStore($product_data->getFinalPrice(),$storeId,true,false);	
+									
+								}
+								$shortcode.= '<div class="price_box">';
+								$shortcode.= '<span class="price">'.$price.'</span>';
+								$shortcode.= '</div>';
+								// #####
+								// End price check
+								// #####		
+							
+							} // End check if grouped or bundle
+						} // End Price
 						
 						// Add to cart button
 						if($type == 'view') {

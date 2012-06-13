@@ -28,10 +28,11 @@ class jck_mwi_shortcodes {
 			'title_tag' => 'h2', // anything
 			'desc' => true, // true/false
 			'img' => true, // true/false
+			'price' => true, // true/false
 			'img_width' => 200, // width of image			
 			'type' => 'add', // add/view
 			'btn_text' => 'View Product', // Text to be used on the button
-			'btn_link' => 'button' //Should it be a button or a link
+			'btn_link' => 'button' //Should it be a button or an anchor
 		), $atts));
 		
 		include("inc/shortcode-products.php");
