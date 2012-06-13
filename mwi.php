@@ -1,7 +1,7 @@
 <?php
 /*
 * @package jck_mwi
-* @version 2.0
+* @version 2.0.1
 */
 
 /*
@@ -9,7 +9,7 @@ Plugin Name: Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 2.0
+Version: 2.0.1
 Author URI: http://www.jckemp.com/
 */
 

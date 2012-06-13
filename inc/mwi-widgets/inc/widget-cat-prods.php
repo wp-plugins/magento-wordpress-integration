@@ -45,6 +45,8 @@ class cat_prods extends WP_Widget {
 		$show_title = isset( $instance['show_title'] ) ? $instance['show_title'] : false;
 		$link_title = isset( $instance['link_title'] ) ? $instance['link_title'] : false;
 		
+		$show_price = isset( $instance['show_price'] ) ? $instance['show_price'] : false;
+		
 		$link_img = isset( $instance['link_img'] ) ? $instance['link_img'] : false;
 		$show_img = isset( $instance['show_img'] ) ? $instance['show_img'] : false;
 		$img_width = $instance['img_width'];
@@ -109,42 +111,43 @@ class cat_prods extends WP_Widget {
 					}
 				} // End if $show_title
 				
-				
-				if($prod_model->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_BUNDLE && $prod_model->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
-				
-					// Don't show price if it's a grouped or bundle product
-				
-					// #####
-					// The below code checks if the price has been explicitly set per website, to avoid converting at normal conversion rates
-					// #####							
-					$default_sv = jck_mwi::getValue('default_sv', 'default');				
-					$stores = $app->getStores();				
-					foreach($stores as $store) {					
-						if($store->getCode() == $default_sv) { // finding the store if of the default store, to get the default product price					
-							$default_store_id = $store->getStoreId();						
-							$productId = $prod_model->getId(); // get current product ID
-							$product = Mage::getModel('catalog/product')->setStoreId($default_store_id)->load($productId); // Check price in default store
-							$defaultPrice = $product->getFinalPrice();											
-						}					
-					}
+				if($show_price) {				
+					if($prod_model->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_BUNDLE && $prod_model->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
 					
-					if($prod_model->getFinalPrice() != $defaultPrice) {
+						// Don't show price if it's a grouped or bundle product
+					
+						// #####
+						// The below code checks if the price has been explicitly set per website, to avoid converting at normal conversion rates
+						// #####							
+						$default_sv = jck_mwi::getValue('default_sv', 'default');				
+						$stores = $app->getStores();				
+						foreach($stores as $store) {					
+							if($store->getCode() == $default_sv) { // finding the store if of the default store, to get the default product price					
+								$default_store_id = $store->getStoreId();						
+								$productId = $prod_model->getId(); // get current product ID
+								$product = Mage::getModel('catalog/product')->setStoreId($default_store_id)->load($productId); // Check price in default store
+								$defaultPrice = $product->getFinalPrice();											
+							}					
+						}
 						
-						$options = array();
-						//$options = array( 'position' => 16 ); // Set currency sign to the right.
-						$price = $app->getStore()->getCurrentCurrency()->format($prod_model->getPrice(), $options, true);
+						if($prod_model->getFinalPrice() != $defaultPrice) {
 							
-					} else {
-						
-						$price = Mage::helper('core')->currencyByStore($prod_model->getFinalPrice(),$storeId,true,false);	
-						
-					}		
-					$html .= '<span class="product_price">'.$price.'</span>';
-					// #####
-					// End price check
-					// #####		
-				
-				} // End check if grouped or bundle
+							$options = array();
+							//$options = array( 'position' => 16 ); // Set currency sign to the right.
+							$price = $app->getStore()->getCurrentCurrency()->format($prod_model->getPrice(), $options, true);
+								
+						} else {
+							
+							$price = Mage::helper('core')->currencyByStore($prod_model->getFinalPrice(),$storeId,true,false);	
+							
+						}		
+						$html .= '<span class="product_price">'.$price.'</span>';
+						// #####
+						// End price check
+						// #####		
+					
+					} // End check if grouped or bundle
+				} // End if price
 				
 				
 				// Add to cart button
@@ -199,6 +202,8 @@ class cat_prods extends WP_Widget {
 		$instance['show_title'] = $new_instance['show_title'];
 		$instance['link_title'] = $new_instance['link_title'];
 		
+		$instance['show_price'] = $new_instance['show_price'];
+		
 		$instance['link_img'] = $new_instance['link_img'];
 		$instance['show_img'] = $new_instance['show_img'];
 		$instance['img_width'] = strip_tags( $new_instance['img_width'] );
@@ -231,7 +236,8 @@ class cat_prods extends WP_Widget {
 			'randomise' => 'on', 
 			'show' => 5,
 			'show_title' => 'on', 
-			'link_title' => 'on', 
+			'link_title' => 'on',
+			'show_price' => 'on',
 			'link_img' => 'on',
 			'show_img' => 'on', 
 			'img_width' => 150 ,
@@ -292,6 +298,17 @@ class cat_prods extends WP_Widget {
 		</p>
     
     <hr style="height:0; border:none; border-top:1px solid #DFDFDF; border-bottom:1px solid #fff; width:100%; margin:20px 0 0;" />
+    
+    <h4><?php _e('Product Price'); ?></h4>
+    
+    <p>
+			<label for="<?php echo $this->get_field_id( 'show_price' ); ?>">
+      	<input class="checkbox" type="checkbox" <?php checked( $instance['show_price'], 'on' ); ?> id="<?php echo $this->get_field_id( 'show_price' ); ?>" name="<?php echo $this->get_field_name( 'show_price' ); ?>" />
+				<?php _e('Show Price?'); ?>
+      </label>
+		</p>
+		
+	<hr style="height:0; border:none; border-top:1px solid #DFDFDF; border-bottom:1px solid #fff; width:100%; margin:20px 0 0;" />
     
     <h4><?php _e('Product Images'); ?></h4>
     

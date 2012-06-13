@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMU
 Tags: magento,wordpress,blocks,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
 Tested up to: 3.3.2
-Stable tag: 2.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,9 @@ Please visit the [Magento Wordpress Integration website](http://magentowp.com/do
 
 == Changelog ==
 
+= 2.0.1 =
+* Added ability to hide/show price for widget/shortcodes
+
 = 2.0 =
 * Template functions to easily get blocks - simply enter the block name to get any block from Magento
 * Shortcodes to add products to your WordPress posts/pages (via an add-on)
@@ -55,6 +58,9 @@ Please visit the [Magento Wordpress Integration website](http://magentowp.com/do
 * This is the first release of the Magento WordPress Integration Plugin.
 
 == Upgrade Notice ==
+
+= 2.0.1 =
+* Added ability to hide/show price for widget/shortcodes
 
 = 2.0 =
 * WARNING: This plugin has been completely rewritten and the old functions from MWI v1.* will no longer work. If you aren't prepared to change the functions, I'd advise not upgrading! Read the [documentation](http://magentowp.com/documentation/) for more information.
