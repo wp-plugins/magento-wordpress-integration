@@ -1,7 +1,7 @@
 <?php
 /*
 * @package jck_mwi
-* @version 2.0.1
+* @version 2.0.2
 */
 
 /*
@@ -179,6 +179,9 @@ class jck_mwi
 			if(class_exists( 'Mage' ) && !is_admin()) {
 				global $app;
 				$app = Mage::app($sv); // Use $sv variable from above as Magento Store View Code
+				
+				$locale = Mage::app()->getLocale()->getLocaleCode();
+				Mage::getSingleton('core/translate')->setLocale($locale)->init('frontend', true);
 				
 				// Session setup
 				Mage::getSingleton('core/session', array('name'=>'frontend'));
