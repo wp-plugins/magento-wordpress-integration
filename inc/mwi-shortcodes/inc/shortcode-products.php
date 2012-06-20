@@ -2,9 +2,10 @@
 	/*
 	* @package jck_mwi
 	* @version 2.0
+	* @updated 2.0.3
 	*/
 	
-	global $app;
+	$app = jck_mwi::getapp();
 
 	$shortcode = '';
 	$store_url = Mage::getBaseUrl();

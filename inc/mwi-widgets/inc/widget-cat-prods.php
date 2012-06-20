@@ -3,6 +3,7 @@
 	* @package jck_mwi
 	* @version 2.0
 	* @description Creates our Category Products widget
+	* @updated 2.0.3
 	*/
 class cat_prods extends WP_Widget {
 	
@@ -31,7 +32,7 @@ class cat_prods extends WP_Widget {
 	
 	function widget( $args, $instance ) {
 		
-		global $app;
+		$app = jck_mwi::getapp();
 		
 		extract( $args );
 		
