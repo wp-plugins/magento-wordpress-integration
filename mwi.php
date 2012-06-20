@@ -1,7 +1,7 @@
 <?php
 /*
 * @package jck_mwi
-* @version 2.0.2
+* @version 2.0.3
 */
 
 /*
@@ -9,7 +9,7 @@ Plugin Name: Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 2.0.1
+Version: 2.0.3
 Author URI: http://www.jckemp.com/
 */
 
@@ -22,20 +22,64 @@ class jck_mwi
   ###                                          ###
   ################################################
   
+  	// Get storeview
+  	function storeview(){
+	  	// Store View
+  		$default_sv = jck_mwi::getValue('default_sv','default');
+		$multiple_sv = jck_mwi::getValue('multiple_sv');
+		
+		$sv = $default_sv;
+		// Loop through multiple Store View codes, if they exist - if not, set default.
+		if($multiple_sv && !empty($multiple_sv[0]['url'])) {
+			
+			$currUrl = $this->curPageURL(); // Get Current Page URL
+			
+			foreach($multiple_sv as $single_sv) {
+				
+				if($this->compareUrls($currUrl,$single_sv['url'])) {
+					$sv = $single_sv['store_view_code'];
+				} 
+				
+			}
+			
+		} // End if $multiple_sv
+		
+		return $sv;
+  	}
+  	
+  	// Get App for current store
+  	// Added v2.0.3
+  	function getapp(){
+	  	// Store View
+  		$sv = jck_mwi::storeview();
+		return Mage::app($sv);
+  	}
+  	
   	// Generate layout
   	function layout() {
-	  	$customerSession = Mage::getSingleton('customer/session');	
-		$logged = ($customerSession->isLoggedIn()) ? 'customer_logged_in' : 'customer_logged_out';
-		
-		global $app;
+  	
+  		$app = jck_mwi::getapp();  		
 		$layout = $app->getLayout();
-		$layout->getUpdate()
-		    ->addHandle('default')
-		    ->addHandle($logged)
-		    ->load();
 		
-		$layout->generateXml()
-		       ->generateBlocks();
+		$module = $app->getRequest()->getModuleName(); // Check if page belongs to Magento
+  	
+		if(!$module) {
+			
+	  		$customerSession = Mage::getSingleton('customer/session');	
+			$logged = ($customerSession->isLoggedIn()) ? 'customer_logged_in' : 'customer_logged_out';  
+			
+			$sv = jck_mwi::storeview();	
+	  		
+			$layout->getUpdate()
+			    ->addHandle('default')
+			    ->addHandle('STORE_'.$sv)
+			    ->addHandle($logged)
+			    ->load();
+			
+			$layout->generateXml()
+			       ->generateBlocks();
+		       
+		}
 		
 		return $layout;
   	} 
@@ -144,43 +188,15 @@ class jck_mwi
 		$package = $this->getValue('package','default');
 		$theme = $this->getValue('theme','default');
 		
-		// Store View
-		$default_sv = $this->getValue('default_sv', 'default');
-		$multiple_sv = $this->getValue('multiple_sv');
-		
-		// Loop through multiple Store View codes, if they exist - if not, set default.
-		if($multiple_sv) {
-			
-			$currUrl = $this->curPageURL(); // Get Current Page URL
-			
-			foreach($multiple_sv as $single_sv) {
-				
-				if($this->compareUrls($currUrl,$single_sv['url'])) {
-					$sv = $single_sv['store_view_code'];
-				} 
-				
-			}
-			
-			if(!isset($sv)) {
-				$sv = $default_sv;
-			}
-			
-		} else {
-			
-			$sv = $default_sv;
-			
-		} // End if $multiple_sv
-		
 		if ( !empty( $magepath ) && file_exists( $magepath ) && !is_dir( $magepath )) {
 			
 			require_once($magepath);
 			umask(0);
 			
 			if(class_exists( 'Mage' ) && !is_admin()) {
-				global $app;
-				$app = Mage::app($sv); // Use $sv variable from above as Magento Store View Code
+				$app = jck_mwi::getapp();
 				
-				$locale = Mage::app()->getLocale()->getLocaleCode();
+				$locale = $app->getLocale()->getLocaleCode();
 				Mage::getSingleton('core/translate')->setLocale($locale)->init('frontend', true);
 				
 				// Session setup
