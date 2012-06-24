@@ -3,6 +3,7 @@
 	* @package jck_mwi
 	* @version 2.0
 	* @description All the front end functions, conveniently contained within one awesome file!
+	* @updated 2.0.4
 	*/
 
   ################################################
@@ -11,11 +12,13 @@
   ###                                          ###
   ################################################
   
-  	function get_block($name) {
+  	function get_block($name, $render = true) {
 	  	$layout = jck_mwi::layout();
 	  	$block = $layout->getBlock($name);
-	  	if($block) { 
+	  	if($block && $render) { 
 	  		return $block->toHtml(); 
+	  	} elseif($block && $render === false) {
+	  		return $block;
 	  	} else { 
 	  		return __('Sorry, that block could not be found.','mwi');
 	  	}

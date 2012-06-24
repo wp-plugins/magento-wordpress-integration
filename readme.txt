@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMU
 Tags: magento,wordpress,blocks,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
 Tested up to: 3.4
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,9 @@ Please visit the [Magento Wordpress Integration website](http://magentowp.com/do
 
 == Changelog ==
 
+= 2.0.4 =
+* Added abilty to get block as an object
+
 = 2.0.3 =
 * Added new functions to check if block is being implemented on a Magento page
 * Fixed issue with default storeview code not being set porperly
@@ -65,6 +68,9 @@ Please visit the [Magento Wordpress Integration website](http://magentowp.com/do
 * This is the first release of the Magento WordPress Integration Plugin.
 
 == Upgrade Notice ==
+
+= 2.0.4 =
+* Added abilty to get block as an object
 
 = 2.0.3 =
 * Added new functions to check if block is being implemented on a Magento page
