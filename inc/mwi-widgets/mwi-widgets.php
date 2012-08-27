@@ -116,5 +116,6 @@ class jck_mwi_widgets {
 	
 }
 $jck_mwi_widgets = new jck_mwi_widgets; // Start an instance of the plugin class
+
 include_once('inc/widget-cat-prods.php');
 include_once('inc/widget-cat-specific.php');
