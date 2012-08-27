@@ -24,11 +24,11 @@ class jck_mwi_shortcodes {
 	function product($atts) {
 		extract(shortcode_atts(array(
 			'sku' => '', // product SKU from Magento
-			'title' => true, // true/false
+			'title' => "true", // true/false
 			'title_tag' => 'h2', // anything
-			'desc' => true, // true/false
-			'img' => true, // true/false
-			'price' => true, // true/false
+			'desc' => "true", // true/false
+			'img' => "true", // true/false
+			'price' => "true", // true/false
 			'img_width' => 200, // width of image			
 			'type' => 'add', // add/view
 			'btn_text' => 'View Product', // Text to be used on the button
