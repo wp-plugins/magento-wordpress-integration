@@ -20,6 +20,11 @@
 			$mwi_message = '<p>' . __("Widget/Shortcodes field deactivated",'mwi') . '</p>';
 		}
 		
+		if($field == "widgetspecific")
+		{
+			$mwi_message = '<p>' . __("Category Specific Widget field deactivated",'mwi') . '</p>';
+		}
+		
 		// show message on page
 		$this->admin_message($mwi_message);
 	}
@@ -46,6 +51,11 @@
 			if($field == "widgetsshortcodes")
 			{
 				$mwi_message = '<p>' . __("Widget/Shortcodes field activated",'mwi') . '</p>';
+			}
+			
+			if($field == "widgetspecific")
+			{
+				$mwi_message = '<p>' . __("Category Specific Widget field activated",'mwi') . '</p>';
 			}
 		}
 		else

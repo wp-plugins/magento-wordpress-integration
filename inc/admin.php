@@ -215,7 +215,27 @@
 										
 						</td>
 					</tr>
-					
+					<tr>
+						<td>Category Specific Widget</td>
+						<td><?php if($this->u('widgetspecific')){ _e('Active'); } else { _e('Inactive'); } ?></td>
+						<td>
+						
+							<form method="post" action="">
+								<?php if($this->u('widgetspecific')){
+									echo '<span class="activation_code">XXXX-XXXX-XXXX-'.substr($this->k('widgetspecific'),-4) .'</span>';
+									echo '<input type="hidden" name="mwi_field_deactivate" value="widgetspecific" />';
+									echo '<input type="submit" class="button" value="Deactivate" />';
+								}
+								else
+								{
+									echo '<input type="text" name="key" value="" class="regular-text" />';
+									echo '<input type="hidden" name="mwi_field_activate" value="widgetspecific" />';
+									echo '<input type="submit" class="button" value="Activate" />';
+								} ?>
+							</form>
+										
+						</td>
+					</tr>					
 				</tbody>
 			</table>
 			
