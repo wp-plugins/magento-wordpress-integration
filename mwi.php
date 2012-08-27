@@ -1,7 +1,7 @@
 <?php
 /*
 * @package jck_mwi
-* @version 2.1.0
+* @version 2.1.1
 */
 
 /*
@@ -9,7 +9,7 @@ Plugin Name: Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 2.1.0
+Version: 2.1.1
 Author URI: http://www.jckemp.com/
 */
 
@@ -286,6 +286,9 @@ class jck_mwi
 		    case 'widgetsshortcodes':
 		    	if(md5($this->k($field_name)) == "a529679f11e4e30766ee7b20bdf62547"){ return true; } else { return false; }
 		        break;
+		    case 'widgetspecific':
+		    	if(md5($this->k($field_name)) == "dc87cedbdb5a14e4b39dec55a24f6f0c"){ return true; } else { return false; }
+		        break;
 	    }
 	}
 	
@@ -354,7 +357,5 @@ $jck_mwi = new jck_mwi; // Start an instance of the plugin class
 
 include_once('inc/template-functions.php');
 
-if($jck_mwi->u('widgetsshortcodes')) {
-	include_once('inc/mwi-shortcodes/mwi-shortcodes.php');
-	include_once('inc/mwi-widgets/mwi-widgets.php');
-}
+include_once('inc/mwi-shortcodes/mwi-shortcodes.php');
+include_once('inc/mwi-widgets/mwi-widgets.php');
