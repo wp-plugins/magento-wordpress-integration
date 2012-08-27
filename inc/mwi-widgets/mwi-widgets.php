@@ -1,7 +1,8 @@
 <?php
 /*
 * @package jck_mwi_widgets requires jck_mwi (magento wordpress integration)
-* @version 1.0
+* @version 1.1
+* @updated 2.1.2
 */
 
 /*
@@ -23,37 +24,8 @@ class jck_mwi_widgets {
 	
 	function register_widgets() {
 		global $jck_mwi;
-		if($this->u('widgetsshortcodes')) { register_widget( 'cat_prods' ); }
-		if($this->u('widgetspecific')) { register_widget( 'cat_specific' ); }
-	}
-	
-  ################################################
-  ###                                          ###
-  ###                Unlocked                  ###
-  ###                                          ###
-  ################################################
-	
-	public function u($field_name)
-	{
-		switch ($field_name) {
-		    case 'widgetsshortcodes':
-		    	if(md5($this->k($field_name)) == "a529679f11e4e30766ee7b20bdf62547"){ return true; } else { return false; }
-		        break;
-		    case 'widgetspecific':
-		    	if(md5($this->k($field_name)) == "dc87cedbdb5a14e4b39dec55a24f6f0c"){ return true; } else { return false; }
-		        break;
-	    }
-	}
-	
-  ################################################
-  ###                                          ###
-  ###                The Key                   ###
-  ###                                          ###
-  ################################################
-	
-	private function k($field_name)
-	{
-		return get_option('mwi_' . $field_name . '_ac');
+		if($jck_mwi->u('widgetsshortcodes')) { register_widget( 'cat_prods' ); }
+		if($jck_mwi->u('widgetspecific')) { register_widget( 'cat_specific' ); }
 	}
 	
   ################################################
@@ -108,7 +80,7 @@ class jck_mwi_widgets {
   { 
   		global $jck_mwi;
 		add_action( 'widgets_init', array(&$this, 'register_widgets') );
-		if($this->u('widgetspecific')) { 
+		if($jck_mwi->u('widgetspecific')) { 
 			add_action ( 'edit_category_form_fields', array(&$this, 'extra_category_fields') ); 
 			add_action ( 'edited_category', array(&$this, 'save_extra_category_fileds') );
 		}
