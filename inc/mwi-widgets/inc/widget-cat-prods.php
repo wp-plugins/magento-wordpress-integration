@@ -32,7 +32,8 @@ class cat_prods extends WP_Widget {
 	
 	function widget( $args, $instance ) {
 		
-		$app = jck_mwi::getapp();
+		global $jck_mwi;
+		$app = $jck_mwi->getapp();
 		
 		extract( $args );
 		
