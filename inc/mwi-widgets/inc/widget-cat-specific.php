@@ -1,11 +1,11 @@
 <?php
 	/*
 	* @package jck_mwi
-	* @version 2.0
-	* @description Creates our Category Products widget
-	* @updated 2.0.3
+	* @version 2.1.1
+	* @description Creates our Category Specific Products widget
+	* @updated 2.1.1
 	*/
-class cat_prods extends WP_Widget {
+class cat_specific extends WP_Widget {
 	
   ################################################
   ###                                          ###
@@ -13,15 +13,15 @@ class cat_prods extends WP_Widget {
   ###                                          ###
   ################################################
 	
-	function cat_prods() {
+	function cat_specific() {
 		/* Widget settings. */
-		$widget_ops = array( 'classname' => 'cat_prods', 'description' => 'Display products as a list from any Magento category.' );
+		$widget_ops = array( 'classname' => 'cat_specific', 'description' => 'Displays products from the Magento category defined per WordPress category. If no Magento category is defined, the default category is used. If no default is defined, the widget does not show.' );
 
 		/* Widget control settings. */
-		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'cat-prods' );
+		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'cat-specific' );
 
 		/* Create the widget. */
-		$this->WP_Widget( 'cat-prods', 'Mage/WP: Products from category', $widget_ops, $control_ops );
+		$this->WP_Widget( 'cat-specific', 'Mage/WP: Category specific products', $widget_ops, $control_ops );
 	}
 	
   ################################################
@@ -40,7 +40,17 @@ class cat_prods extends WP_Widget {
 		// Settings obtained from widget	
 		$widget_title = $instance['widget_title'];
 			
-		$cat_id = $instance['cat_id'];
+		if(is_category()) {
+			$category_options = get_option('widgetspecific_'.get_query_var('cat'));
+			$cat_id = ($category_options['mage_cat_id']) ? $category_options['mage_cat_id'] : $instance['cat_id'];
+		} elseif(is_single()) {
+			$category = get_the_category();
+			$category_options = get_option('widgetspecific_'.$category[0]->cat_ID);
+			$cat_id = ($category_options['mage_cat_id']) ? $category_options['mage_cat_id'] : $instance['cat_id'];
+		}else {
+			$cat_id = $instance['cat_id'];
+		}
+		
 		$randomise = isset( $instance['randomise'] ) ? $instance['randomise'] : false;
 		$show = $instance['show'];
 		
@@ -78,110 +88,114 @@ class cat_prods extends WP_Widget {
 			shuffle($ids);
 		}
 		
-		// Start widget output
-		echo $before_widget;	
-		echo $before_title;
-		echo $widget_title;
-		echo $after_title;	
+		if($cat_id != "") { // If the category has no ID and no default as been set, don't show anything.
 		
-		$html = "<ul class='mwi_product_widget'>";
-		
-			$i = 0; foreach($ids as $id){
-				$prod_model = Mage::getModel('catalog/product')->load($id); /* Load Products by ID*/
-				
-				$name = trim($prod_model->getName());
-				$poductUrl = $store_url.Mage::getModel('catalog/product_url')->getUrlPath($prod_model);
-				//$attribute = trim($prod_model->getAttributeText('colour')); // get attribute text
-				
-				$class = ($i+1 == $show) ? ' class="last"' : '';
-				$html .= "<li".$class.">";
-				
-				
-				if($show_img) {
-					
-					if($link_img) { $html .= '<a class="product_img" href="'.$poductUrl.'" title="'.$name.'">'; $img_class = ''; } else {  $img_class = ' class="product_img"'; }
-					$html .= '<img'.$img_class.' width="'.$img_width.'" title="' . $name . '" src="' . Mage::helper('catalog/image')->init($prod_model, 'thumbnail')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize($img_width) . '" alt="' . $name . '">';
-					if($link_img) { $html .= '</a>'; }
-				
-				} // End if $show_img
-				
-				if($show_title) {
-					if($link_title) { 
-						$html .= '<a class="product_title" href="'.$poductUrl.'" title="'.$name.'">'.$name.'</a>'; 
-					} else { 
-						$html .= '<span class="product_title">'.$name.'</span>'; 
-					}
-				} // End if $show_title
-				
-				if($show_price) {				
-					if($prod_model->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_BUNDLE && $prod_model->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
-					
-						// Don't show price if it's a grouped or bundle product
-					
-						// #####
-						// The below code checks if the price has been explicitly set per website, to avoid converting at normal conversion rates
-						// #####							
-						$default_sv = jck_mwi::getValue('default_sv', 'default');				
-						$stores = $app->getStores();				
-						foreach($stores as $store) {					
-							if($store->getCode() == $default_sv) { // finding the store if of the default store, to get the default product price					
-								$default_store_id = $store->getStoreId();						
-								$productId = $prod_model->getId(); // get current product ID
-								$product = Mage::getModel('catalog/product')->setStoreId($default_store_id)->load($productId); // Check price in default store
-								$defaultPrice = $product->getFinalPrice();											
-							}					
-						}
-						
-						if($prod_model->getFinalPrice() != $defaultPrice) {
-							
-							$options = array();
-							//$options = array( 'position' => 16 ); // Set currency sign to the right.
-							$price = $app->getStore()->getCurrentCurrency()->format($prod_model->getPrice(), $options, true);
-								
-						} else {
-							
-							$price = Mage::helper('core')->currencyByStore($prod_model->getFinalPrice(),$storeId,true,false);	
-							
-						}		
-						$html .= '<span class="product_price">'.$price.'</span>';
-						// #####
-						// End price check
-						// #####		
-					
-					} // End check if grouped or bundle
-				} // End if price
-				
-				
-				// Add to cart button
-				if($view_product) {
-					if($vp_btn_link == 'btn') {
-						$html .= '<button class="form-button product_view" onclick="setLocation(\''. $poductUrl .'\')"><span>'. __($vp_btn_link_text,'mwi') .'</span></button>';
-					} else {
-						$html .= '<a class="product_view" href="'.$poductUrl.'" title="'.$name.'">'. __($vp_btn_link_text,'mwi') .'</a>';
-					}
-				}
-				
-				
-				// Add to cart button
-				if($add_to_cart && $prod_model->isSaleable()) {						
-					if($atc_btn_link == 'btn') {
-						$html .= '<button class="form-button product_btn" onclick="setLocation(\''. Mage::helper('checkout/cart')->getAddUrl($prod_model) .'\')"><span>'. __($atc_btn_link_text,'mwi') .'</span></button>';
-					} else {
-						$html .= '<a class="product_btn" href="'.Mage::helper('checkout/cart')->getAddUrl($prod_model).'" title="'.$name.'">'. __($atc_btn_link_text,'mwi') .'</a>';
-					}
-				}
-				
-				$html .= '</li>';
-				
-				if (++$i == $show) break;
-				
-			} // End foreach
-		
-		$html .= "</ul>";
-		
-		echo $html;
+			// Start widget output
+			echo $before_widget;	
+			echo $before_title;
+			echo $widget_title;
+			echo $after_title;	
 			
-		echo $after_widget;
+			$html = "<ul class='mwi_product_widget'>";
+			
+				$i = 0; foreach($ids as $id){
+					$prod_model = Mage::getModel('catalog/product')->load($id); /* Load Products by ID*/
+					
+					$name = trim($prod_model->getName());
+					$poductUrl = $store_url.Mage::getModel('catalog/product_url')->getUrlPath($prod_model);
+					//$attribute = trim($prod_model->getAttributeText('colour')); // get attribute text
+					
+					$class = ($i+1 == $show) ? ' class="last"' : '';
+					$html .= "<li".$class.">";
+					
+					
+					if($show_img) {
+						
+						if($link_img) { $html .= '<a class="product_img" href="'.$poductUrl.'" title="'.$name.'">'; $img_class = ''; } else {  $img_class = ' class="product_img"'; }
+						$html .= '<img'.$img_class.' width="'.$img_width.'" title="' . $name . '" src="' . Mage::helper('catalog/image')->init($prod_model, 'thumbnail')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize($img_width) . '" alt="' . $name . '">';
+						if($link_img) { $html .= '</a>'; }
+					
+					} // End if $show_img
+					
+					if($show_title) {
+						if($link_title) { 
+							$html .= '<a class="product_title" href="'.$poductUrl.'" title="'.$name.'">'.$name.'</a>'; 
+						} else { 
+							$html .= '<span class="product_title">'.$name.'</span>'; 
+						}
+					} // End if $show_title
+					
+					if($show_price) {				
+						if($prod_model->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_BUNDLE && $prod_model->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
+						
+							// Don't show price if it's a grouped or bundle product
+						
+							// #####
+							// The below code checks if the price has been explicitly set per website, to avoid converting at normal conversion rates
+							// #####							
+							$default_sv = jck_mwi::getValue('default_sv', 'default');				
+							$stores = $app->getStores();				
+							foreach($stores as $store) {					
+								if($store->getCode() == $default_sv) { // finding the store if of the default store, to get the default product price					
+									$default_store_id = $store->getStoreId();						
+									$productId = $prod_model->getId(); // get current product ID
+									$product = Mage::getModel('catalog/product')->setStoreId($default_store_id)->load($productId); // Check price in default store
+									$defaultPrice = $product->getFinalPrice();											
+								}					
+							}
+							
+							if($prod_model->getFinalPrice() != $defaultPrice) {
+								
+								$options = array();
+								//$options = array( 'position' => 16 ); // Set currency sign to the right.
+								$price = $app->getStore()->getCurrentCurrency()->format($prod_model->getPrice(), $options, true);
+									
+							} else {
+								
+								$price = Mage::helper('core')->currencyByStore($prod_model->getFinalPrice(),$storeId,true,false);	
+								
+							}		
+							$html .= '<span class="product_price">'.$price.'</span>';
+							// #####
+							// End price check
+							// #####		
+						
+						} // End check if grouped or bundle
+					} // End if price
+					
+					
+					// Add to cart button
+					if($view_product) {
+						if($vp_btn_link == 'btn') {
+							$html .= '<button class="form-button product_view" onclick="setLocation(\''. $poductUrl .'\')"><span>'. __($vp_btn_link_text,'mwi') .'</span></button>';
+						} else {
+							$html .= '<a class="product_view" href="'.$poductUrl.'" title="'.$name.'">'. __($vp_btn_link_text,'mwi') .'</a>';
+						}
+					}
+					
+					
+					// Add to cart button
+					if($add_to_cart && $prod_model->isSaleable()) {						
+						if($atc_btn_link == 'btn') {
+							$html .= '<button class="form-button product_btn" onclick="setLocation(\''. Mage::helper('checkout/cart')->getAddUrl($prod_model) .'\')"><span>'. __($atc_btn_link_text,'mwi') .'</span></button>';
+						} else {
+							$html .= '<a class="product_btn" href="'.Mage::helper('checkout/cart')->getAddUrl($prod_model).'" title="'.$name.'">'. __($atc_btn_link_text,'mwi') .'</a>';
+						}
+					}
+					
+					$html .= '</li>';
+					
+					if (++$i == $show) break;
+					
+				} // End foreach
+			
+			$html .= "</ul>";
+			
+			echo $html;
+				
+			echo $after_widget;
+			
+		} // End check for category ID
 
 	}
 	
@@ -263,7 +277,7 @@ class cat_prods extends WP_Widget {
     <h4 style="margin-top:0;"><?php _e('Product Display'); ?></h4>
     
     <p>
-			<label for="<?php echo $this->get_field_id( 'cat_id' ); ?>"><?php _e('Category ID:'); ?><br />
+			<label for="<?php echo $this->get_field_id( 'cat_id' ); ?>"><?php _e('Default Category ID:'); ?><br />
 				<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'cat_id' ); ?>" name="<?php echo $this->get_field_name( 'cat_id' ); ?>" value="<?php echo $instance['cat_id']; ?>" style="width:60px;" />
       </label>
 		</p>
@@ -397,4 +411,4 @@ class cat_prods extends WP_Widget {
     <?php
 	}
 	
-} // End class cat_prods
+} // End class cat_specific
