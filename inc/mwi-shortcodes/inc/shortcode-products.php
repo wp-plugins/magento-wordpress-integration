@@ -5,7 +5,8 @@
 	* @updated 2.0.3
 	*/
 	
-	$app = jck_mwi::getapp();
+	global $jck_mwi;
+	$app = $jck_mwi->getapp();
 
 	$shortcode = '';
 	$store_url = Mage::getBaseUrl();
@@ -33,14 +34,14 @@
 					$shortcode .= '<div class="product">';
 						
 						// #### Thumbnail #### //
-						if($img === true) {
+						if($img == "true") {
 						$shortcode .= '<a class="product_img" href="'.$poductUrl.'" title="' . $product_data->getName() . '">';
 								$shortcode .= '<img width="'.$img_width.'" title="' . $product_data->getName() . '" src="' . Mage::helper('catalog/image')->init($product_data, 'thumbnail')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize($img_width) . '" alt="' . $product_data->getName() . '">';
 						$shortcode .= '</a>';
 						}
 						
 						// #### Title #### //
-						if($title === true) {
+						if($title == "true") {
 							if($title_tag != '') { 
 								$shortcode .= '<'.$title_tag.' class="product_title">'.'<a class="product_img" href="'.$poductUrl.'" title="' . $product_data->getName() . '">'.$product_data->getName().'</a>'.'</'.$title_tag.'>'; 
 							} else {
@@ -49,11 +50,11 @@
 						}
 						
 						// #### Description #### //
-						if($desc === true) { 
+						if($desc == "true") { 
 							$shortcode .= '<div class="product_desc">'.$product_data->getShortDescription().'</div>';
 						}				
 						
-						if($price === true) {
+						if($price == "true") {
 							// #### Price #### //						
 							if($product_data->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_BUNDLE && $product_data->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
 					
@@ -62,7 +63,7 @@
 								// #####
 								// The below code checks if the price has been explicitly set per website, to avoid converting at normal conversion rates
 								// #####							
-								$default_sv = jck_mwi::getValue('default_sv', 'default');				
+								$default_sv = $jck_mwi->getValue('default_sv', 'default');				
 								$stores = $app->getStores();				
 								foreach($stores as $store) {					
 									if($store->getCode() == $default_sv) { // finding the store if of the default store, to get the default product price					
