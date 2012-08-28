@@ -1,7 +1,7 @@
 <?php
 /*
 * @package jck_mwi
-* @version 2.1.2
+* @version 2.1.3
 */
 
 /*
@@ -9,7 +9,7 @@ Plugin Name: Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 2.1.2
+Version: 2.1.3
 Author URI: http://www.jckemp.com/
 */
 
@@ -25,18 +25,18 @@ class jck_mwi
   	// Get storeview
   	public function storeview(){
 	  	// Store View
-  		$default_sv = $this->getValue('default_sv','default');
-		$multiple_sv = $this->getValue('multiple_sv');
+  		$default_sv = self::getValue('default_sv','default');
+		$multiple_sv = self::getValue('multiple_sv');
 		
 		$sv = $default_sv;
 		// Loop through multiple Store View codes, if they exist - if not, set default.
 		if($multiple_sv && !empty($multiple_sv[0]['url'])) {
 			
-			$currUrl = $this->curPageURL(); // Get Current Page URL
+			$currUrl = self::curPageURL(); // Get Current Page URL
 			
 			foreach($multiple_sv as $single_sv) {
 				
-				if($this->compareUrls($currUrl,$single_sv['url'])) {
+				if(self::compareUrls($currUrl,$single_sv['url'])) {
 					$sv = $single_sv['store_view_code'];
 				} 
 				
@@ -51,14 +51,14 @@ class jck_mwi
   	// Added v2.0.3
   	public function getapp(){
 	  	// Store View
-  		$sv = $this->storeview();
+  		$sv = self::storeview();
 		return Mage::app($sv);
   	}
   	
   	// Generate layout
   	public function layout() {
   	
-  		$app = $this->getapp();  		
+  		$app = self::getapp();  		
 		$layout = $app->getLayout();
 		
 		$module = $app->getRequest()->getModuleName(); // Check if page belongs to Magento
@@ -68,7 +68,7 @@ class jck_mwi
 	  		$customerSession = Mage::getSingleton('customer/session');	
 			$logged = ($customerSession->isLoggedIn()) ? 'customer_logged_in' : 'customer_logged_out';  
 			
-			$sv = $this->storeview();	
+			$sv = self::storeview();	
 	  		
 			$layout->getUpdate()
 			    ->addHandle('default')
@@ -121,14 +121,14 @@ class jck_mwi
 	
 	// Compose the URL
 	public function composeUrl($string) {
-		return $this->stripHttp($this->addSlash($string));
+		return self::stripHttp(self::addSlash($string));
 	}
   
 	// Compare URLs and return true if they match or if User inputted URL is contained within current browser URL
 	public function compareUrls($currUrl, $userUrl) {
 	
-		$currUrl = $this->composeUrl($currUrl);
-		$userUrl = $this->composeUrl($userUrl);
+		$currUrl = self::composeUrl($currUrl);
+		$userUrl = self::composeUrl($userUrl);
 		
 		if($currUrl == $userUrl) {
 			
@@ -182,11 +182,11 @@ class jck_mwi
 	public function mage() {
 		
 		// Mage Path
-		$magepath = $this->getValue('magepath');
+		$magepath = self::getValue('magepath');
 		
 		// Theme Info
-		$package = $this->getValue('package','default');
-		$theme = $this->getValue('theme','default');
+		$package = self::getValue('package','default');
+		$theme = self::getValue('theme','default');
 		
 		if ( !empty( $magepath ) && file_exists( $magepath ) && !is_dir( $magepath )) {
 			
@@ -194,7 +194,7 @@ class jck_mwi
 			umask(0);
 			
 			if(class_exists( 'Mage' ) && !is_admin()) {
-				$app = $this->getapp();
+				$app = self::getapp();
 				
 				$locale = $app->getLocale()->getLocaleCode();
 				Mage::getSingleton('core/translate')->setLocale($locale)->init('frontend', true);
@@ -227,13 +227,13 @@ class jck_mwi
 	// Build admin Page
 	public function mwi_admin_page() {		
 		// Mage Path
-		$magepath = $this->getValue('magepath');
+		$magepath = self::getValue('magepath');
 		
 		// notification/error messages
 		if ( !empty( $magepath ) && !file_exists( $magepath ) ) {
 			$message = '<div class="mwi-error">'.__('Invalid URL','mwi').'</div>';
 		} elseif ( !empty( $magepath ) && file_exists( $magepath ) ) {
-			$this->mage();
+			self::mage();
 			$message = ( class_exists( 'Mage' ) ) ? '<div class="mwi-success">'.__('Mage.php was found!','mwi').'</div>' : '<div class="mwi-error">'.__('Mage object not found!','mwi').'</div>';
 		} else {
 			$message = '';
@@ -284,10 +284,10 @@ class jck_mwi
 	{
 		switch ($field_name) {
 		    case 'widgetsshortcodes':
-		    	if(md5($this->k($field_name)) == "a529679f11e4e30766ee7b20bdf62547"){ return true; } else { return false; }
+		    	if(md5(self::k($field_name)) == "a529679f11e4e30766ee7b20bdf62547"){ return true; } else { return false; }
 		        break;
 		    case 'widgetspecific':
-		    	if(md5($this->k($field_name)) == "dc87cedbdb5a14e4b39dec55a24f6f0c"){ return true; } else { return false; }
+		    	if(md5(self::k($field_name)) == "dc87cedbdb5a14e4b39dec55a24f6f0c"){ return true; } else { return false; }
 		        break;
 	    }
 	}
@@ -339,7 +339,7 @@ class jck_mwi
   
 	// PHP 4 Compatible Constructor
 	public function jck_mwi() {
-	$this->__construct();
+	self::__construct();
 	}
 	
 	// PHP 5 Constructor
