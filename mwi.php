@@ -167,7 +167,7 @@ class jck_mwi
 		wp_enqueue_script( 'mwiAdminJS' );
 	}
 	public function admin_init() {
-		wp_register_style( 'mwiAdminCss', plugins_url('css/admin.css', __FILE__) );
+		wp_register_style( 'mwiAdminCss', plugins_url('css/admin.css', __FILE__), false, '2.2.0' );
 		wp_register_script( 'mwiAdminJS', plugins_url('js/admin.js', __FILE__), array('jquery') );
 	}
 	
