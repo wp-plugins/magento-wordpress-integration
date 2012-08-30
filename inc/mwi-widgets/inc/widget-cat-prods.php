@@ -42,6 +42,7 @@ class cat_prods extends WP_Widget {
 			
 		$cat_id = $instance['cat_id'];
 		$randomise = isset( $instance['randomise'] ) ? $instance['randomise'] : false;
+		$out_of_stock = isset( $instance['out_of_stock'] ) ? 1 : 0;
 		$show = $instance['show'];
 		
 		$show_title = isset( $instance['show_title'] ) ? $instance['show_title'] : false;
@@ -95,58 +96,62 @@ class cat_prods extends WP_Widget {
 			$i = 0; foreach($ids as $id){
 				$prod_model = Mage::getModel('catalog/product')->load($id); /* Load Products by ID*/
 				
-				$name = trim($prod_model->getName());
-				$poductUrl = $prod_model->getProductUrl();
-				//$attribute = trim($prod_model->getAttributeText('colour')); // get attribute text
+				if($prod_model->getIsInStock() >= $out_of_stock) {
 				
-				$class = ($i+1 == $show) ? ' class="last"' : '';
-				$html .= "<li".$class.">";
-				
-				
-					if($show_img) {
+					$name = trim($prod_model->getName());
+					$poductUrl = $prod_model->getProductUrl();
+					//$attribute = trim($prod_model->getAttributeText('colour')); // get attribute text
+					
+					$class = ($i+1 == $show) ? ' class="last"' : '';
+					$html .= "<li".$class.">";
+					
+					
+						if($show_img) {
+							
+							if($link_img) { $html .= '<a class="product_img" href="'.$poductUrl.'" title="'.$name.'">'; $img_class = ''; } else {  $img_class = ' class="product_img"'; }
+							$html .= '<img'.$img_class.' width="'.$img_width.'" title="' . $name . '" src="' . Mage::helper('catalog/image')->init($prod_model, 'thumbnail')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize($img_width) . '" alt="' . $name . '">';
+							if($link_img) { $html .= '</a>'; }
 						
-						if($link_img) { $html .= '<a class="product_img" href="'.$poductUrl.'" title="'.$name.'">'; $img_class = ''; } else {  $img_class = ' class="product_img"'; }
-						$html .= '<img'.$img_class.' width="'.$img_width.'" title="' . $name . '" src="' . Mage::helper('catalog/image')->init($prod_model, 'thumbnail')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize($img_width) . '" alt="' . $name . '">';
-						if($link_img) { $html .= '</a>'; }
-					
-					} // End if $show_img
-					
-					if($show_title) {
-						if($link_title) { 
-							$html .= '<a class="product_title" href="'.$poductUrl.'" title="'.$name.'">'.$name.'</a>'; 
-						} else { 
-							$html .= '<span class="product_title">'.$name.'</span>'; 
+						} // End if $show_img
+						
+						if($show_title) {
+							if($link_title) { 
+								$html .= '<a class="product_title" href="'.$poductUrl.'" title="'.$name.'">'.$name.'</a>'; 
+							} else { 
+								$html .= '<span class="product_title">'.$name.'</span>'; 
+							}
+						} // End if $show_title
+						
+						if($show_price) {				
+							// #### Price #### //	
+							$html .= $theProductBlock->getPriceHtml($prod_model, true);
+						} // End if price
+						
+						
+						// Add to cart button
+						if($view_product) {
+							if($vp_btn_link == 'btn') {
+								$html .= '<button class="product_btn ' . $vp_btn_link_color .' form-button product_view" onclick="setLocation(\''. $poductUrl .'\')"><span>'. Mage::helper('core')->__('View Product') .'</span></button>';
+							} else {
+								$html .= '<a class="product_btn ' . $vp_btn_link_color .' product_view" href="'.$poductUrl.'" title="'.$name.'">'. Mage::helper('core')->__('View Product') .'</a>';
+							}
 						}
-					} // End if $show_title
-					
-					if($show_price) {				
-						// #### Price #### //	
-						$html .= $theProductBlock->getPriceHtml($prod_model, true);
-					} // End if price
-					
-					
-					// Add to cart button
-					if($view_product) {
-						if($vp_btn_link == 'btn') {
-							$html .= '<button class="product_btn ' . $vp_btn_link_color .' form-button product_view" onclick="setLocation(\''. $poductUrl .'\')"><span>'. Mage::helper('core')->__('View Product') .'</span></button>';
-						} else {
-							$html .= '<a class="product_btn ' . $vp_btn_link_color .' product_view" href="'.$poductUrl.'" title="'.$name.'">'. Mage::helper('core')->__('View Product') .'</a>';
+						
+						
+						// Add to cart button
+						if($add_to_cart && $prod_model->isSaleable()) {						
+							if($atc_btn_link == 'btn') {
+								$html .= '<button class="form-button product_btn ' . $atc_btn_link_color .'" onclick="setLocation(\''. Mage::helper('checkout/cart')->getAddUrl($prod_model) .'\')"><span>'. Mage::helper('core')->__('Add to Cart') .'</span></button>';
+							} else {
+								$html .= '<a class="product_btn ' . $atc_btn_link_color .'" href="'.Mage::helper('checkout/cart')->getAddUrl($prod_model).'" title="'.$name.'">'. Mage::helper('core')->__('Add to Cart') .'</a>';
+							}
 						}
-					}
 					
+					$html .= '</li>';
 					
-					// Add to cart button
-					if($add_to_cart && $prod_model->isSaleable()) {						
-						if($atc_btn_link == 'btn') {
-							$html .= '<button class="form-button product_btn ' . $atc_btn_link_color .'" onclick="setLocation(\''. Mage::helper('checkout/cart')->getAddUrl($prod_model) .'\')"><span>'. Mage::helper('core')->__('Add to Cart') .'</span></button>';
-						} else {
-							$html .= '<a class="product_btn ' . $atc_btn_link_color .'" href="'.Mage::helper('checkout/cart')->getAddUrl($prod_model).'" title="'.$name.'">'. Mage::helper('core')->__('Add to Cart') .'</a>';
-						}
-					}
-				
-				$html .= '</li>';
-				
-				if (++$i == $show) break;
+					if (++$i == $show) break;
+					
+				} // end check if in stock
 				
 			} // End foreach
 		
@@ -172,6 +177,7 @@ class cat_prods extends WP_Widget {
 		
 		$instance['cat_id'] = strip_tags( $new_instance['cat_id'] );
 		$instance['randomise'] = $new_instance['randomise'];
+		$instance['out_of_stock'] = $new_instance['out_of_stock'];
 		$instance['show'] = strip_tags( $new_instance['show'] );
 			
 		$instance['show_title'] = $new_instance['show_title'];
@@ -208,7 +214,8 @@ class cat_prods extends WP_Widget {
 		$defaults = array( 
 			'widget_title' => 'Featured Products', 
 			'cat_id' => '', 
-			'randomise' => 'on', 
+			'randomise' => 'on',
+			'out_of_stock' => 'on', 
 			'show' => 5,
 			'show_title' => 'on', 
 			'link_title' => 'on',
@@ -251,6 +258,13 @@ class cat_prods extends WP_Widget {
     <p>
 			<label for="<?php echo $this->get_field_id( 'show' ); ?>"><?php _e('Number of Products to show:'); ?><br />
 				<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'show' ); ?>" name="<?php echo $this->get_field_name( 'show' ); ?>" value="<?php echo $instance['show']; ?>" style="width:60px;" />
+      </label>
+		</p>
+		
+		<p>
+			<label for="<?php echo $this->get_field_id( 'out_of_stock' ); ?>">
+      	<input class="checkbox" type="checkbox" <?php checked( $instance['out_of_stock'], 'on' ); ?> id="<?php echo $this->get_field_id( 'out_of_stock' ); ?>" name="<?php echo $this->get_field_name( 'out_of_stock' ); ?>" />
+				<?php _e('Hide out of stock products?'); ?>
       </label>
 		</p>
     

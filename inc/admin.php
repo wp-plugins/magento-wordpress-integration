@@ -54,6 +54,40 @@
 				      <th scope="row"><strong><?php _e('Theme Name'); ?></strong></th>
 				      <td><input class="regular-text" type="text" name="mwi_options[theme]" value="<?php echo $jck_mwi->getValue('theme','default'); ?>" /></td>
 				      <td></td>
+				    </tr>
+				    
+				    <tr valign="top">
+				      <th scope="row">
+				      	<strong><?php _e('Magento Website Code'); ?></strong>
+				      	<p><?php _e('Enter the Magento website code to get blocks and sessions from. You can see all available website codes to the right. The default is usually base.'); ?></p>
+					    <?php if ( !class_exists('Mage') ) { ?><p><?php _e('The table of available website codes will appear to the right once the path to Mage.php is saved and correct.'); ?></p><?php } ?>
+				      </th>
+				      <td><input class="regular-text" type="text" name="mwi_options[websitecode]" value="<?php echo $jck_mwi->getValue('websitecode','base'); ?>" /></td>
+				      <td>
+				      	<?php if ( class_exists('Mage') ) { ?>
+				      		<p><strong>Available Magento Websites</strong></p>
+					      <table>
+					      	<tr>
+						      	<?php /* ?><th>ID</th><?php */ ?>
+						      	<th>Name</th>
+						      	<th>Code</th>
+					      	</tr>
+					      	<?php
+								$allStores = Mage::app()->getWebsites();
+								foreach ($allStores as $_eachStoreId => $val) {
+									$_storeCode = Mage::app()->getWebsite($_eachStoreId)->getCode();
+									$_storeName = Mage::app()->getWebsite($_eachStoreId)->getName();
+									$_storeId = Mage::app()->getWebsite($_eachStoreId)->getId();
+									//print_r(Mage::app()->getStore($_eachStoreId));
+									echo '<tr>';
+										//echo '<td>'.$_storeId.'</td>';
+										echo '<td>'.$_storeName.'</td>';
+										echo '<td>'.$_storeCode.'</td>';
+									echo '</tr>';
+								} ?>
+					      </table>
+					    <?php } ?>
+				      </td>
 				    </tr>	
 				    
 				    <?php if($jck_mwi->u('widgetspecific') || $jck_mwi->u('widgetsshortcodes')) { ?>

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMU
 Tags: magento,wordpress,blocks,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: 2.1.4
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,6 +43,10 @@ Please visit the [Magento Wordpress Integration website](http://magentowp.com/do
 Please visit the [Magento Wordpress Integration website](http://magentowp.com/documentation/faq/) for frequently asked questions.
 
 == Changelog ==
+
+= 2.2.0 =
+* Added the option to set the Magento Website Code - I hope to integrate this with WPML in the near future.
+* Added option to hide out of stock products from the widgets.
 
 = 2.1.4 =
 * Completely removed the multi-store view functionality - it is all now automatic
@@ -85,6 +89,10 @@ Please visit the [Magento Wordpress Integration website](http://magentowp.com/do
 * This is the first release of the Magento WordPress Integration Plugin.
 
 == Upgrade Notice ==
+
+= 2.2.0 =
+* Added the option to set the Magento Website Code - I hope to integrate this with WPML in the near future.
+* Added option to hide out of stock products from the widgets.
 
 = 2.1.4 =
 * Completely removed the multi-store view functionality - it is all now automatic

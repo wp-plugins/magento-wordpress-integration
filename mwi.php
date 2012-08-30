@@ -1,7 +1,7 @@
 <?php
 /*
 * @package jck_mwi
-* @version 2.1.4
+* @version 2.2.0
 */
 
 /*
@@ -9,7 +9,7 @@ Plugin Name: Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 2.1.4
+Version: 2.2.0
 Author URI: http://www.jckemp.com/
 */
 
@@ -25,7 +25,7 @@ class jck_mwi
   	// Generate layout
   	public function layout() {
   	
-  		$app = Mage::app();  		
+  		$app = self::getApp();
 		$layout = $app->getLayout();
 		
 		$module = $app->getRequest()->getModuleName(); // Check if page belongs to Magento
@@ -47,6 +47,13 @@ class jck_mwi
 		
 		return $layout;
   	} 
+  	
+  	public function getApp() {
+	  	if(class_exists( 'Mage' ) && !is_admin()) {
+	  		$app = Mage::app(self::getValue('websitecode','base'), 'website');
+	  		return $app;
+	  	}
+  	}
 	
 	################################################
 	###                                          ###
@@ -95,7 +102,7 @@ class jck_mwi
 			umask(0);
 			
 			if(class_exists( 'Mage' ) && !is_admin()) {
-				$app = Mage::app();
+				$app = self::getApp();
 				
 				$locale = $app->getLocale()->getLocaleCode();
 				Mage::getSingleton('core/translate')->setLocale($locale)->init('frontend', true);
