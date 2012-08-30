@@ -2,6 +2,7 @@
 /*
 * @package jck_mwi_shortcodes requires jck_mwi (magento wordpress integration)
 * @version 1.0
+* @updated 2.1.4
 */
 
 /*
@@ -24,15 +25,16 @@ class jck_mwi_shortcodes {
 	function product($atts) {
 		extract(shortcode_atts(array(
 			'sku' => '', // product SKU from Magento
-			'title' => true, // true/false
+			'title' => "true", // true/false
 			'title_tag' => 'h2', // anything
-			'desc' => true, // true/false
-			'img' => true, // true/false
-			'price' => true, // true/false
+			'desc' => "true", // true/false
+			'img' => "true", // true/false
+			'price' => "true", // true/false
 			'img_width' => 200, // width of image			
 			'type' => 'add', // add/view
-			'btn_text' => 'View Product', // Text to be used on the button
-			'btn_link' => 'button' //Should it be a button or an anchor
+			'btn_link' => 'button', //Should it be a button or an anchor,
+			'btn_color' => 'blue', // Color of the button blue/orange/black/gray/white/red/rosy/green/pink/none
+			'cols' => 3 // Number of columns for when there is more than one product on show
 		), $atts));
 		
 		include("inc/shortcode-products.php");
