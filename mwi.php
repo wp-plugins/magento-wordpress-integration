@@ -1,7 +1,7 @@
 <?php
 /*
 * @package jck_mwi
-* @version 2.1.3
+* @version 2.1.4
 */
 
 /*
@@ -9,7 +9,7 @@ Plugin Name: Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 2.1.3
+Version: 2.1.4
 Author URI: http://www.jckemp.com/
 */
 
@@ -21,44 +21,11 @@ class jck_mwi
   ###             Core Functions               ###
   ###                                          ###
   ################################################
-  
-  	// Get storeview
-  	public function storeview(){
-	  	// Store View
-  		$default_sv = self::getValue('default_sv','default');
-		$multiple_sv = self::getValue('multiple_sv');
-		
-		$sv = $default_sv;
-		// Loop through multiple Store View codes, if they exist - if not, set default.
-		if($multiple_sv && !empty($multiple_sv[0]['url'])) {
-			
-			$currUrl = self::curPageURL(); // Get Current Page URL
-			
-			foreach($multiple_sv as $single_sv) {
-				
-				if(self::compareUrls($currUrl,$single_sv['url'])) {
-					$sv = $single_sv['store_view_code'];
-				} 
-				
-			}
-			
-		} // End if $multiple_sv
-		
-		return $sv;
-  	}
-  	
-  	// Get App for current store
-  	// Added v2.0.3
-  	public function getapp(){
-	  	// Store View
-  		$sv = self::storeview();
-		return Mage::app($sv);
-  	}
   	
   	// Generate layout
   	public function layout() {
   	
-  		$app = self::getapp();  		
+  		$app = Mage::app();  		
 		$layout = $app->getLayout();
 		
 		$module = $app->getRequest()->getModuleName(); // Check if page belongs to Magento
@@ -67,12 +34,9 @@ class jck_mwi
 			
 	  		$customerSession = Mage::getSingleton('customer/session');	
 			$logged = ($customerSession->isLoggedIn()) ? 'customer_logged_in' : 'customer_logged_out';  
-			
-			$sv = self::storeview();	
 	  		
 			$layout->getUpdate()
 			    ->addHandle('default')
-			    ->addHandle('STORE_'.$sv)
 			    ->addHandle($logged)
 			    ->load();
 			
@@ -83,69 +47,6 @@ class jck_mwi
 		
 		return $layout;
   	} 
-  
-	// Get current page URL (http://webcheatsheet.com/php/get_current_page_url.php)
-	public function curPageURL() {
-		
-		$pageURL = 'http';
-		if(isset($_SERVER["HTTPS"])) {
-			if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
-		}
-		$pageURL .= "://";
-		
-		if(isset($_SERVER["SERVER_PORT"])) {
-		if ($_SERVER["SERVER_PORT"] != "80") {
-			$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
-		} else {
-			$pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-		}
-		}
-		
-		return $pageURL;
-	}
-	
-	// Strip generic parts of URL
-	public function stripHttp($string) {
-		$replace = array('http://','www.','https://');
-		return str_replace($replace, '', $string);
-	}
-	
-	// Add trailing slash to all URLs
-	public function addSlash($string) {
-		$lastChar = substr($string, -1);
-		if($lastChar != '/') {
-			$string = $string.'/';
-		}
-		return $string;
-	}
-	
-	// Compose the URL
-	public function composeUrl($string) {
-		return self::stripHttp(self::addSlash($string));
-	}
-  
-	// Compare URLs and return true if they match or if User inputted URL is contained within current browser URL
-	public function compareUrls($currUrl, $userUrl) {
-	
-		$currUrl = self::composeUrl($currUrl);
-		$userUrl = self::composeUrl($userUrl);
-		
-		if($currUrl == $userUrl) {
-			
-			return true;
-		
-		} else {
-			
-			$strpos = strpos($currUrl,$userUrl);
-			
-			if($strpos || $strpos === (int)0) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		
-	}
 	
 	################################################
 	###                                          ###
@@ -194,7 +95,7 @@ class jck_mwi
 			umask(0);
 			
 			if(class_exists( 'Mage' ) && !is_admin()) {
-				$app = self::getapp();
+				$app = Mage::app();
 				
 				$locale = $app->getLocale()->getLocaleCode();
 				Mage::getSingleton('core/translate')->setLocale($locale)->init('frontend', true);
@@ -244,7 +145,7 @@ class jck_mwi
 	
 	// Validate Settings 
 	public function validate_mwi_settings($data) {		
-		$data['multiple_sv'] = array_values($data['multiple_sv']);
+		//$data['multiple_sv'] = array_values($data['multiple_sv']);
 		return $data;	
 	}
 	
@@ -273,6 +174,11 @@ class jck_mwi
 		wp_register_script( 'mwi_scripts', plugins_url('/js/mwi_scripts.js', __FILE__), array(), false, true);
 		wp_enqueue_script( 'mwi_scripts' );
 	} 
+	
+	public function stylesheets() {
+        wp_register_style( 'mwi_addon_styles', plugins_url('css/addon-styles.css', __FILE__) );
+        wp_enqueue_style( 'mwi_addon_styles' );
+    }
 	
   ################################################
   ###                                          ###
@@ -349,6 +255,7 @@ class jck_mwi
 		add_action( 'admin_init', array(&$this, 'admin_init') );
 		add_action( 'wp_enqueue_scripts',  array(&$this, 'scripts') );
 		add_action( 'init', array($this, 'init') );
+		if(( self::u('widgetspecific') || self::u('widgetsshortcodes') ) && self::getValue('styles',0) == 1) { add_action( 'wp_enqueue_scripts', array(&$this, 'stylesheets') ); }
 	}  
   
 } // End jck_mwi Class

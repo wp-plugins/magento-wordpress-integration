@@ -2,7 +2,7 @@
 /*
 * @package jck_mwi_widgets requires jck_mwi (magento wordpress integration)
 * @version 1.1
-* @updated 2.1.2
+* @updated 2.1.4
 */
 
 /*

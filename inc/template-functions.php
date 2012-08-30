@@ -13,7 +13,8 @@
   ################################################
   
   	function get_block($name, $render = true) {
-	  	$layout = jck_mwi::layout();
+  		global $jck_mwi;
+	  	$layout = $jck_mwi->layout();
 	  	$block = $layout->getBlock($name);
 	  	if($block && $render) { 
 	  		return $block->toHtml(); 
@@ -25,7 +26,8 @@
   	}
   	
   	function the_block($name) {
-	  	$layout = jck_mwi::layout();
+	  	global $jck_mwi;
+	  	$layout = $jck_mwi->layout();
 	  	$block = $layout->getBlock($name);
 	  	if($block) { 
 	  		echo $block->toHtml(); 

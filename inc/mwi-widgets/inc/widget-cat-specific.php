@@ -3,7 +3,7 @@
 	* @package jck_mwi
 	* @version 2.1.1
 	* @description Creates our Category Specific Products widget
-	* @updated 2.1.1
+	* @updated 2.1.4
 	*/
 class cat_specific extends WP_Widget {
 	
@@ -33,7 +33,7 @@ class cat_specific extends WP_Widget {
 	function widget( $args, $instance ) {
 		
 		global $jck_mwi;
-		$app = $jck_mwi->getapp();
+		$app = Mage::app();
 		
 		extract( $args );
 		
@@ -65,17 +65,23 @@ class cat_specific extends WP_Widget {
 		
 		$view_product = isset( $instance['view_product'] ) ? $instance['view_product'] : false;
 		$vp_btn_link = $instance['vp_btn_link'];
-		$vp_btn_link_text = $instance['vp_btn_link_text'];
+		$vp_btn_link_color = $instance['vp_btn_link_color'];
 		
 		$add_to_cart = isset( $instance['add_to_cart'] ) ? $instance['add_to_cart'] : false;
 		$atc_btn_link = $instance['atc_btn_link'];
-		$atc_btn_link_text = $instance['atc_btn_link_text'];
+		$atc_btn_link_color = $instance['atc_btn_link_color'];
+		
+		$theProductBlock = new Mage_Catalog_Block_Product;		
 		
 		// Initiate Magento products		
 		$storeId = $app->getStore()->getId(); // Get current store ID		
 		$category = new Mage_Catalog_Model_Category();
 		$category->load($cat_id);
-		$collection = $category->getProductCollection();
+		$collection = $category->getProductCollection()
+		//->addAttributeToSelect('*')
+		->addAttributeToSelect(array('name', 'product_url', 'thumbnail', 'price', 'special_price', 'group_price'))
+	    ->addAttributeToFilter('status', 1)
+	    ->addAttributeToFilter('visibility', array('neq' => 1));
 		
 		$store_url = Mage::getBaseUrl();
 		
@@ -94,7 +100,7 @@ class cat_specific extends WP_Widget {
 			echo $before_widget;	
 			echo $before_title;
 			echo $widget_title;
-			echo $after_title;	
+			echo $after_title;
 			
 			$html = "<ul class='mwi_product_widget'>";
 			
@@ -102,86 +108,56 @@ class cat_specific extends WP_Widget {
 					$prod_model = Mage::getModel('catalog/product')->load($id); /* Load Products by ID*/
 					
 					$name = trim($prod_model->getName());
-					$poductUrl = $store_url.Mage::getModel('catalog/product_url')->getUrlPath($prod_model);
+					$poductUrl = $prod_model->getProductUrl(); //$store_url.Mage::getModel('catalog/product_url')->getUrlPath($prod_model);
 					//$attribute = trim($prod_model->getAttributeText('colour')); // get attribute text
 					
 					$class = ($i+1 == $show) ? ' class="last"' : '';
 					$html .= "<li".$class.">";
 					
 					
-					if($show_img) {
-						
-						if($link_img) { $html .= '<a class="product_img" href="'.$poductUrl.'" title="'.$name.'">'; $img_class = ''; } else {  $img_class = ' class="product_img"'; }
-						$html .= '<img'.$img_class.' width="'.$img_width.'" title="' . $name . '" src="' . Mage::helper('catalog/image')->init($prod_model, 'thumbnail')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize($img_width) . '" alt="' . $name . '">';
-						if($link_img) { $html .= '</a>'; }
-					
-					} // End if $show_img
-					
-					if($show_title) {
-						if($link_title) { 
-							$html .= '<a class="product_title" href="'.$poductUrl.'" title="'.$name.'">'.$name.'</a>'; 
-						} else { 
-							$html .= '<span class="product_title">'.$name.'</span>'; 
-						}
-					} // End if $show_title
-					
-					if($show_price) {				
-						if($prod_model->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_BUNDLE && $prod_model->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
-						
-							// Don't show price if it's a grouped or bundle product
-						
-							// #####
-							// The below code checks if the price has been explicitly set per website, to avoid converting at normal conversion rates
-							// #####							
-							$default_sv = jck_mwi::getValue('default_sv', 'default');				
-							$stores = $app->getStores();				
-							foreach($stores as $store) {					
-								if($store->getCode() == $default_sv) { // finding the store if of the default store, to get the default product price					
-									$default_store_id = $store->getStoreId();						
-									$productId = $prod_model->getId(); // get current product ID
-									$product = Mage::getModel('catalog/product')->setStoreId($default_store_id)->load($productId); // Check price in default store
-									$defaultPrice = $product->getFinalPrice();											
-								}					
-							}
+						if($show_img) {
 							
-							if($prod_model->getFinalPrice() != $defaultPrice) {
-								
-								$options = array();
-								//$options = array( 'position' => 16 ); // Set currency sign to the right.
-								$price = $app->getStore()->getCurrentCurrency()->format($prod_model->getPrice(), $options, true);
-									
-							} else {
-								
-								$price = Mage::helper('core')->currencyByStore($prod_model->getFinalPrice(),$storeId,true,false);	
-								
-							}		
-							$html .= '<span class="product_price">'.$price.'</span>';
-							// #####
-							// End price check
-							// #####		
+							if($link_img) { $html .= '<a class="product_img" href="'.$poductUrl.'" title="'.$name.'">'; $img_class = ''; } else {  $img_class = ' class="product_img"'; }
+							$html .= '<img'.$img_class.' width="'.$img_width.'" title="' . $name . '" src="' . Mage::helper('catalog/image')->init($prod_model, 'thumbnail')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize($img_width) . '" alt="' . $name . '">';
+							if($link_img) { $html .= '</a>'; }
 						
-						} // End check if grouped or bundle
-					} // End if price
-					
-					
-					// Add to cart button
-					if($view_product) {
-						if($vp_btn_link == 'btn') {
-							$html .= '<button class="form-button product_view" onclick="setLocation(\''. $poductUrl .'\')"><span>'. __($vp_btn_link_text,'mwi') .'</span></button>';
-						} else {
-							$html .= '<a class="product_view" href="'.$poductUrl.'" title="'.$name.'">'. __($vp_btn_link_text,'mwi') .'</a>';
+						} // End if $show_img
+						
+						if($show_title) {
+							if($link_title) { 
+								$html .= '<a class="product_title" href="'.$poductUrl.'" title="'.$name.'">'.$name.'</a>'; 
+							} else { 
+								$html .= '<span class="product_title">'.$name.'</span>'; 
+							}
+						} // End if $show_title
+						
+						if($show_price) {				
+							// #### Price #### //	
+							$html .= $theProductBlock->getPriceHtml($prod_model, true);
+						} // End if price
+						
+						$vp_button_link_color = ($vp_btn_link_color == 'none') ? 'product_btn_nostyle' : $vp_btn_link_color.' product_btn';
+						
+						// Add to cart button
+						if($view_product) {
+							if($vp_btn_link == 'btn') {
+								$html .= '<button class="' . $vp_button_link_color .' form-button product_view" onclick="setLocation(\''. $poductUrl .'\')"><span>'. Mage::helper('core')->__('View Product') .'</span></button>';
+							} else {
+								$html .= '<a class="' . $vp_button_link_color .' product_view" href="'.$poductUrl.'" title="'.$name.'">'. Mage::helper('core')->__('View Product') .'</a>';
+							}
 						}
-					}
-					
-					
-					// Add to cart button
-					if($add_to_cart && $prod_model->isSaleable()) {						
-						if($atc_btn_link == 'btn') {
-							$html .= '<button class="form-button product_btn" onclick="setLocation(\''. Mage::helper('checkout/cart')->getAddUrl($prod_model) .'\')"><span>'. __($atc_btn_link_text,'mwi') .'</span></button>';
-						} else {
-							$html .= '<a class="product_btn" href="'.Mage::helper('checkout/cart')->getAddUrl($prod_model).'" title="'.$name.'">'. __($atc_btn_link_text,'mwi') .'</a>';
+						
+						$atc_button_link_color = ($atc_btn_link_color == 'none') ? 'product_btn_nostyle' : $atc_btn_link_color.' product_btn';
+						
+						
+						// Add to cart button
+						if($add_to_cart && $prod_model->isSaleable()) {						
+							if($atc_btn_link == 'btn') {
+								$html .= '<button class="form-button ' . $atc_button_link_color .'" onclick="setLocation(\''. Mage::helper('checkout/cart')->getAddUrl($prod_model) .'\')"><span>'. Mage::helper('core')->__('Add to Cart') .'</span></button>';
+							} else {
+								$html .= '<a class="' . $atc_button_link_color .'" href="'.Mage::helper('checkout/cart')->getAddUrl($prod_model).'" title="'.$name.'">'. Mage::helper('core')->__('Add to Cart') .'</a>';
+							}
 						}
-					}
 					
 					$html .= '</li>';
 					
@@ -226,11 +202,11 @@ class cat_specific extends WP_Widget {
 		
 		$instance['view_product'] = $new_instance['view_product'];
 		$instance['vp_btn_link'] = $new_instance['vp_btn_link'];
-		$instance['vp_btn_link_text'] = $new_instance['vp_btn_link_text'];
+		$instance['vp_btn_link_color'] = $new_instance['vp_btn_link_color'];
 		
 		$instance['add_to_cart'] = $new_instance['add_to_cart'];
 		$instance['atc_btn_link'] = $new_instance['atc_btn_link'];
-		$instance['atc_btn_link_text'] = $new_instance['atc_btn_link_text'];
+		$instance['atc_btn_link_color'] = $new_instance['atc_btn_link_color'];
 		
 		// $instance['sex'] = $new_instance['sex'];
 
@@ -259,10 +235,10 @@ class cat_specific extends WP_Widget {
 			'img_width' => 150 ,
 			'view_product' => 'on',
 			'vp_btn_link' => 'btn',
-			'vp_btn_link_text' => __('View','mwi'),
+			'vp_btn_link_color' => 'blue',
 			'add_to_cart' => 'on',
 			'atc_btn_link' => 'btn',
-			'atc_btn_link_text' => __('Add to Cart','mwi')
+			'atc_btn_link_color' => 'blue'
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
     
@@ -369,8 +345,18 @@ class cat_specific extends WP_Widget {
 		</p>
     
     <p>
-			<label for="<?php echo $this->get_field_id( 'vp_btn_link_text' ); ?>"><?php _e('Button/Link Text:'); ?><br />
-				<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'vp_btn_link_text' ); ?>" name="<?php echo $this->get_field_name( 'vp_btn_link_text' ); ?>" value="<?php echo $instance['vp_btn_link_text']; ?>" style="width:100%;" />
+			<label for="<?php echo $this->get_field_id( 'vp_btn_link_color' ); ?>"><?php _e('Button/Link Color:'); ?><br />
+			<select id="<?php echo $this->get_field_id( 'vp_btn_link_color' ); ?>" name="<?php echo $this->get_field_name( 'vp_btn_link_color' ); ?>" class="widefat" style="width:100%;">
+				<option value="blue" <?php if ( 'blue' == $instance['vp_btn_link_color'] ) echo 'selected="selected"'; ?>>Blue</option>
+				<option value="orange" <?php if ( 'orange' == $instance['vp_btn_link_color'] ) echo 'selected="selected"'; ?>>Orange</option>
+				<option value="black" <?php if ( 'black' == $instance['vp_btn_link_color'] ) echo 'selected="selected"'; ?>>Black</option>
+				<option value="gray" <?php if ( 'gray' == $instance['vp_btn_link_color'] ) echo 'selected="selected"'; ?>>Gray</option>
+				<option value="white" <?php if ( 'white' == $instance['vp_btn_link_color'] ) echo 'selected="selected"'; ?>>White</option>
+				<option value="red" <?php if ( 'red' == $instance['vp_btn_link_color'] ) echo 'selected="selected"'; ?>>Red</option>
+				<option value="rosy" <?php if ( 'rosy' == $instance['vp_btn_link_color'] ) echo 'selected="selected"'; ?>>Rosy</option>
+				<option value="green" <?php if ( 'green' == $instance['vp_btn_link_color'] ) echo 'selected="selected"'; ?>>Green</option>
+				<option value="pink" <?php if ( 'pink' == $instance['vp_btn_link_color'] ) echo 'selected="selected"'; ?>>Pink</option>
+			</select>
       </label>
 		</p>
     
@@ -395,18 +381,13 @@ class cat_specific extends WP_Widget {
 		</p>
     
     <p>
-			<label for="<?php echo $this->get_field_id( 'atc_btn_link_text' ); ?>"><?php _e('Button/Link Text:'); ?><br />
-				<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'atc_btn_link_text' ); ?>" name="<?php echo $this->get_field_name( 'atc_btn_link_text' ); ?>" value="<?php echo $instance['atc_btn_link_text']; ?>" style="width:100%;" />
+			<label for="<?php echo $this->get_field_id( 'atc_btn_link_color' ); ?>"><?php _e('Button/Link Color:'); ?><br />
+				<select id="<?php echo $this->get_field_id( 'atc_btn_link_color' ); ?>" name="<?php echo $this->get_field_name( 'atc_btn_link_color' ); ?>" class="widefat" style="width:100%;">
+					<option value="blue" <?php if ( 'blue' == $instance['atc_btn_link_color'] ) echo 'selected="selected"'; ?>>Blue</option>
+					<option value="orange" <?php if ( 'orange' == $instance['atc_btn_link_color'] ) echo 'selected="selected"'; ?>>Orange</option>
+				</select>
       </label>
 		</p>
-    
-    <?php /*?><p>
-			<label for="<?php echo $this->get_field_id( 'sex' ); ?>">Sex:</label>
-			<select id="<?php echo $this->get_field_id( 'sex' ); ?>" name="<?php echo $this->get_field_name( 'sex' ); ?>" class="widefat" style="width:100%;">
-				<option <?php if ( 'male' == $instance['format'] ) echo 'selected="selected"'; ?>>male</option>
-				<option <?php if ( 'female' == $instance['format'] ) echo 'selected="selected"'; ?>>female</option>
-			</select>
-		</p><?php */?>
     
     <?php
 	}

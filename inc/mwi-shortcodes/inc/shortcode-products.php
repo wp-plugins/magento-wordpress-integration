@@ -2,14 +2,15 @@
 	/*
 	* @package jck_mwi
 	* @version 2.0
-	* @updated 2.0.3
+	* @updated 2.1.4
 	*/
 	
 	global $jck_mwi;
-	$app = $jck_mwi->getapp();
+	$app = Mage::app();
 
 	$shortcode = '';
 	$store_url = Mage::getBaseUrl();
+	$theProductBlock = new Mage_Catalog_Block_Product;
 
   ################################################
   ###                                          ###
@@ -19,19 +20,25 @@
 
 	if($sku != '') {
 	
-		$skus = explode(',',$sku);
-		
-		$shortcode .= (count($skus) >= 2) ? '<div class="products">' : ''; // Check if there is 1 or more products, and open .products wrapper
+		$skus = explode(',',$sku);		
+		$skucount = count($skus);
 	
-			foreach($skus as $sku) {
+			$i = 0; foreach($skus as $sku) {
 			
-				$product_data = Mage::getModel('catalog/product')->loadByAttribute('sku', $sku);
-			
-				if($product_data) { // If product exists
+				$shortcode .= ($i % $cols == 0 && $skucount >= 2) ? '<div class="products">' : ''; // Check if there is 1 or more products, and open .products wrapper
 				
-					$poductUrl = $store_url.Mage::getModel('catalog/product_url')->getUrlPath($product_data);
+				$product_data = Mage::getModel('catalog/product')
+				->getCollection()
+				->addAttributeToSelect(array('name', 'product_url', 'thumbnail', 'price', 'special_price', 'group_price', 'short_description'))
+				->addFieldToFilter('sku',array('like'=>$sku))
+				->getFirstItem();
+			
+				if($product_data->getName() != "") { // If product exists
+				
+					$poductUrl = $product_data->getProductUrl();
 					
-					$shortcode .= '<div class="product">';
+					$singleclass = ($skucount == 1) ? " single" : "";
+					$shortcode .= '<div class="product'.$singleclass.'">';
 						
 						// #### Thumbnail #### //
 						if($img == "true") {
@@ -43,9 +50,9 @@
 						// #### Title #### //
 						if($title == "true") {
 							if($title_tag != '') { 
-								$shortcode .= '<'.$title_tag.' class="product_title">'.'<a class="product_img" href="'.$poductUrl.'" title="' . $product_data->getName() . '">'.$product_data->getName().'</a>'.'</'.$title_tag.'>'; 
+								$shortcode .= '<'.$title_tag.' class="product_title">'.'<a href="'.$poductUrl.'" title="' . $product_data->getName() . '">'.$product_data->getName().'</a>'.'</'.$title_tag.'>'; 
 							} else {
-								$shortcode .= '<a class="product_img" href="'.$poductUrl.'" title="' . $product_data->getName() . '">'.$product_data->getName().'</a>'; 
+								$shortcode .= '<a href="'.$poductUrl.'" title="' . $product_data->getName() . '">'.$product_data->getName().'</a>'; 
 							}
 						}
 						
@@ -55,61 +62,28 @@
 						}				
 						
 						if($price == "true") {
-							// #### Price #### //						
-							if($product_data->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_BUNDLE && $product_data->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
-					
-								// Don't show price if it's a grouped or bundle product
+							// #### Price #### //	
+							$shortcode .= $theProductBlock->getPriceHtml($product_data, true);					
 							
-								// #####
-								// The below code checks if the price has been explicitly set per website, to avoid converting at normal conversion rates
-								// #####							
-								$default_sv = $jck_mwi->getValue('default_sv', 'default');				
-								$stores = $app->getStores();				
-								foreach($stores as $store) {					
-									if($store->getCode() == $default_sv) { // finding the store if of the default store, to get the default product price					
-										$default_store_id = $store->getStoreId();						
-										$productId = $product_data->getId(); // get current product ID
-										$product = Mage::getModel('catalog/product')->setStoreId($default_store_id)->load($productId); // Check price in default store
-										$defaultPrice = $product->getFinalPrice();											
-									}					
-								}
-								
-								if($product_data->getFinalPrice() != $defaultPrice) {
-									
-									$options = array();
-									//$options = array( 'position' => 16 ); // Set currency sign to the right.
-									$price = $app->getStore()->getCurrentCurrency()->format($product_data->getPrice(), $options, true);
-										
-								} else {
-									
-									$price = Mage::helper('core')->currencyByStore($product_data->getFinalPrice(),$storeId,true,false);	
-									
-								}
-								$shortcode.= '<div class="price_box">';
-								$shortcode.= '<span class="price">'.$price.'</span>';
-								$shortcode.= '</div>';
-								// #####
-								// End price check
-								// #####		
-							
-							} // End check if grouped or bundle
 						} // End Price
+						
+						$button_color = ($btn_color == 'none') ? 'product_btn_nostyle' : $btn_color.' product_btn';
 						
 						// Add to cart button
 						if($type == 'view') {
 							if($btn_link == 'button') {
-								$shortcode .= '<button class="form-button product_view" onclick="setLocation(\''. $poductUrl .'\')"><span>'. __($btn_text,'mwi') .'</span></button>';
+								$shortcode .= '<button class="' . $button_color . ' form-button product_view" onclick="setLocation(\''. $poductUrl .'\')"><span>'. Mage::helper('core')->__('View Product') .'</span></button>';
 							} else {
-								$shortcode .= '<a class="product_view" href="'.$poductUrl.'" title="'.$name.'">'. __($btn_text,'mwi') .'</a>';
+								$shortcode .= '<a class="' . $button_color . ' product_view" href="'.$poductUrl.'" title="'.$name.'">'. Mage::helper('core')->__('View Product') .'</a>';
 							}
 						}
 						
 						// Add to cart button
 						if($type == 'add' && $product_data->isSaleable()) {						
 							if($btn_link == 'button') {
-								$shortcode .= '<button class="form-button product_btn" onclick="setLocation(\''. Mage::helper('checkout/cart')->getAddUrl($product_data) .'\')"><span>'. __($btn_text,'mwi') .'</span></button>';
+								$shortcode .= '<button class="form-button ' . $button_color . '" onclick="setLocation(\''. Mage::helper('checkout/cart')->getAddUrl($product_data) .'\')"><span>'. Mage::helper('core')->__('Add to Cart') .'</span></button>';
 							} else {
-								$shortcode .= '<a class="product_btn" href="'.Mage::helper('checkout/cart')->getAddUrl($product_data).'" title="'.$name.'">'. __($btn_text,'mwi') .'</a>';
+								$shortcode .= '<a class="' . $button_color . '" href="'.Mage::helper('checkout/cart')->getAddUrl($product_data).'" title="'.$name.'">'. Mage::helper('core')->__('Add to Cart') .'</a>';
 							}
 						}
 						
@@ -118,13 +92,16 @@
 					
 				} else { // If product _does not_ exist
 				
-					$shortcode .= __('Sorry, this product does not exist.','mwi');
+					$shortcode .= '<p>'.__('Sorry, this product does not exist.','mwi').'</p>';
 				
 				}
+				
+				$i++; $shortcode .= ($i % $cols == 0 && count($skus) >= 2) ? '</div>' : ''; // Check if there is 1 or more products, and close .products wrapper
 		
 			} // End foreach($skus)
 			
-		$shortcode .= (count($skus) >= 2) ? '</div>' : ''; // Check if there is 1 or more products, and close .products wrapper
+			$shortcode .= ($i % $cols != 0 && count($skus) >= 2) ? '</div>' : ""; // Check if there is 1 or more products, and close .products wrapper (if there is an uneven number of products in a col)
+					
 	
   ################################################
   ###                                          ###
