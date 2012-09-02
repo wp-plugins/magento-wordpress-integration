@@ -12,6 +12,8 @@ Magento WordPress Integration is the easiest way to get blocks, sessions and pro
 
 == Description ==
 
+**[50% Off all add-ons](http://www.magentowp.com/add-ons/)! Thanks for helping me reach 3,500+ downloads. Much appreciated.**
+
 **If you are using this plugin, then you may also be interested in my Magento extension - [Single Sign-on for Magento and Wordpress](http://codecanyon.net/item/single-signon-for-magento-and-wordpress/861453?ref=jamesckemp).**
 
 Using the Magento WordPress Integration plugin you will be able to add any Magento blocks to your WordPress theme, including ones you have created yourself and static blocks created through the Magento admin area. You can also add any number of Magento products to your WordPress posts and pages, using the [shortcode & widget add-on](http://magentowp.com/add-ons/shortcodes-widgets/).
