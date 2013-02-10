@@ -3,7 +3,7 @@ Contributors: jamesckemp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMUSAPCTF88&lc=US&item_name=James%20Kemp&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: magento,wordpress,blocks,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
-Tested up to: 3.4.1
+Tested up to: 3.5.1
 Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -11,8 +11,6 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Magento WordPress Integration is the easiest way to get blocks, sessions and products from your Magento store.
 
 == Description ==
-
-**[50% Off all add-ons](http://www.magentowp.com/add-ons/)! Thanks for helping me reach 3,500+ downloads. Much appreciated.**
 
 **If you are using this plugin, then you may also be interested in my Magento extension - [Single Sign-on for Magento and Wordpress](http://codecanyon.net/item/single-signon-for-magento-and-wordpress/861453?ref=jamesckemp).**
 
@@ -30,9 +28,9 @@ The Magento WordPress Integration Plugin allows you to to the following:
 *   Show Magento products on a WordPress post or page by using the shortcode add-on.
 *   Show products from any category using the widget add-on.
 
-**If upgrading, please back up your database first!**
+**Note:** This plugin does not allow you to completely avoid using Magento on your website, it simply helps you to get your WordPress and Magento themes seamlessly integrated.
 
-**Warning:** Version 2 of MWI has been completely re-written. None of the template functions from MWI v1.* will work anymore, so if you are upgrading, you will need to change the functions used within your WordPress themes to the [new and improved functions](http://magentowp.com/documentation/template-functions/).
+**If upgrading, please back up your database first!**
 
 Follow me on Twitter to keep up with the latest updates [@jamesckemp](https://twitter.com/#!/jamesckemp/)
 
