@@ -11,7 +11,7 @@ Description: Magento WordPress Integration is the simplest way to get blocks & s
 Author: James Kemp
 Version: 2.2.0
 Author URI: http://www.jckemp.com/
-*/
+*/ 
 
 class jck_mwi
 {
