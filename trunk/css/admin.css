@@ -1,0 +1,246 @@
+h2.mwi-title {
+	margin:0 0 25px;
+}
+.form-table {
+	/*table-layout: fixed; */
+}
+.form-table em {
+	font-size: 11px;
+	color: #888;
+}
+.form-table th {
+	padding-top:12px;
+	color: #333;
+}
+.mwi-success, .mwi-warning, .mwi-error {
+	margin: 0;
+	background: #d8f2be;
+	float: left;
+	padding: 0 10px;
+	font-size: 11px;
+	height: 28px;
+	line-height: 30px;
+	border: 1px solid #0a8b00;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+	color:#0a8b00;
+	white-space: nowrap;
+}
+
+.mwi-warning {
+	background:#ffefb1;
+	color:#b36000;
+	border-color:#b36000;
+}
+
+.mwi-error {
+	background-color:#ffebe8;
+	border-color:#c00;
+	color:#c00;
+}
+
+hr.clear {
+	height: 1px;
+	border: none;
+	border-top: 1px solid #DDD;
+	margin: 30px 10px;
+}
+
+.mwi_repeater {
+	table-layout: fixed; 
+}
+
+.mwi_repeater td {
+	border-top: 1px dashed #EEE;
+	padding: 20px 0 10px;
+	vertical-align: top;
+}
+.mwi_repeater tr.first_row td {
+	border:none;
+	padding-top:0;
+}
+
+
+.actions div {
+	width:40px;
+}
+.examples {
+	background: white;
+	width: 400px;
+	z-index: 999;
+	box-shadow: rgb(204, 204, 204) 0px 0px 5px;
+	padding: 1px 15px 19px;
+	margin: 20px 0px 0px;
+	position: relative;
+	display: block;
+	margin-top: 20px;
+	margin-bottom: 0px;
+	padding-top: 1px;
+	padding-bottom: 19px;
+}
+
+.mwi_repeater .add,
+.mwi_repeater .remove {
+	float:left;
+	height:16px;
+	width:16px;
+	background:url(../img/add_remove.png) no-repeat 0 0;
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	margin:4px 0;
+}
+.mwi_repeater .remove {
+	background-position:right 0;
+}
+.mwi_repeater .add:hover {
+	background-position:0 bottom;
+}
+.mwi_repeater .remove:hover {
+	background-position:right bottom;
+}
+
+/* *** Cols *** */
+
+.wrap {
+	position: relative;
+}
+
+#mwi_right {
+	float: right;
+	width: 280px;
+	display: inline;
+	background: #FAFAFA;
+	margin: 67px 0 0;
+	border: 1px solid #DDD;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+}
+	.mwi_meta {
+		padding: 0 15px 5px;
+	}
+#mwi_left {
+	margin-right: 300px;
+}
+
+.fleft {
+	float: left;
+	width: 100%;
+	display: inline;
+}
+
+input.regular-text {
+	width: 90% !important;
+	min-width: 140px;
+	padding: 7px;
+}
+
+.mwi_activate input.regular-text {
+	width: 40% !important;
+	margin: 1px 10px 10px 0;
+}
+
+.mwi_activate td {
+	line-height: 24px;
+}
+
+.activation_code {
+	margin: 0 10px 10px 0;
+	float: left;
+	line-height: 18px;
+	padding: 3px 0;
+}
+
+/* *** Tools *** */
+.clearfix:after {
+   content: ".";
+   display: block;
+   clear: both;
+   visibility: hidden;
+   line-height: 0;
+   height: 0;
+}
+ 
+.clearfix {
+   display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+   display: block;
+}
+ 
+* html .clearfix {
+   height: 1%;
+   overflow: visible;
+}
+
+/* Postboxes */
+
+#poststuff .mwi_settings .inside {
+	margin: 0;
+	padding: 0;
+}
+
+.mwi_settings .form-table {
+	margin: 0;
+	border-collapse: separate;
+	border-spacing: 0;
+}
+	.mwi_settings .form-table td,
+	.mwi_settings .form-table th {
+		border-top: 1px solid #fff;
+		border-bottom: 1px solid #ddd;
+	}
+	.mwi_settings .form-table th {
+		border-right: 1px solid #ebebeb;
+	}
+	
+	.mwi_settings .form-table tr:last-child td,
+	.mwi_settings .form-table tr:last-child th {
+		border-bottom: none;
+	}
+		.mwi_settings .form-table table {
+			border-collapse: collapse;
+			margin-bottom: 10px;
+		}
+			.mwi_settings .form-table table tr {
+				border: 1px solid #DFDFDF;
+				background: #fafafa;
+			}
+			.mwi_settings .form-table table th {
+				background-color: #F1F1F1;
+				background-image: -ms-linear-gradient(top,#F9F9F9,#ECECEC);
+				background-image: -moz-linear-gradient(top,#F9F9F9,#ECECEC);
+				background-image: -o-linear-gradient(top,#F9F9F9,#ECECEC);
+				background-image: -webkit-gradient(linear,left top,left bottom,from(#F9F9F9),to(#ECECEC));
+				background-image: -webkit-linear-gradient(top,#F9F9F9,#ECECEC);
+				background-image: linear-gradient(top,#F9F9F9,#ECECEC);
+				border: none;
+				padding: 5px 10px;
+				font-weight: bold;
+			}
+			.mwi_settings .form-table table td {
+				border: 1px solid #DFDFDF;
+				padding: 5px 10px;
+			}
+	
+	#svc_repeaters {
+		padding: 10px 0 0;
+	}
+		.mwi_repeater {
+			width: 100%;
+		}
+		
+		#svc_repeaters td {
+			padding: 10px 10px 1px;
+			border-top: 1px solid #ebebeb;
+		}
+		
+		#svc_repeaters .first_row td {
+			padding: 0 10px;
+			border-top: none;
+		}
