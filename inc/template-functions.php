@@ -1,10 +1,4 @@
 <?php
-	/*
-	* @package jck_mwi
-	* @version 2.0
-	* @description All the front end functions, conveniently contained within one awesome file!
-	* @updated 2.0.4
-	*/
 
   ################################################
   ###                                          ###
@@ -28,7 +22,9 @@
   	function the_block($name) {
 	  	global $jck_mwi;
 	  	$layout = $jck_mwi->layout();
+	  	//die(print_r($layout));
 	  	$block = $layout->getBlock($name);
+	  	//var_dump($block); die;
 	  	if($block) { 
 	  		echo $block->toHtml(); 
 	  	} else { 

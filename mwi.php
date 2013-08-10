@@ -1,28 +1,20 @@
 <?php
 /*
-* @package jck_mwi
-* @version 2.2.0
-*/
-
-/*
-Plugin Name: Mage/WP Integration
+Plugin Name: MWI - Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 2.2.0
+Version: 3.0.0
 Author URI: http://www.jckemp.com/
-*/ 
+*/
 
 class jck_mwi
 {
   
-  ################################################
-  ###                                          ###
-  ###             Core Functions               ###
-  ###                                          ###
-  ################################################
+/* 	=============================
+   	Core Functions 
+   	============================= */
   	
-  	// Generate layout
   	public function layout() {
   	
   		$app = self::getApp();
@@ -55,11 +47,9 @@ class jck_mwi
 	  	}
   	}
 	
-	################################################
-	###                                          ###
-	###      Get values to prevent errors        ###
-	###                                          ###
-	################################################	
+/* 	=============================
+   	Get values to prevent errors 
+   	============================= */
 	
 	public function getValue($key, $default = '') {		
 	
@@ -81,11 +71,9 @@ class jck_mwi
 	
 	}
 	
-  ################################################
-  ###                                          ###
-  ###           Initiate Mage.php              ###
-  ###                                          ###
-  ################################################
+/* 	=============================
+   	Initiate Mage.php 
+   	============================= */
 	
 	public function mage() {
 		
@@ -119,11 +107,9 @@ class jck_mwi
 		
 	}
 	
-  ################################################
-  ###                                          ###
-  ###               Admin Page                 ###
-  ###                                          ###
-  ################################################
+/* 	=============================
+   	Admin Page 
+   	============================= */
 	
 	// Add Admin Page and trigger settings
 	public function admin_menu() {		
@@ -167,15 +153,13 @@ class jck_mwi
 		wp_enqueue_script( 'mwiAdminJS' );
 	}
 	public function admin_init() {
-		wp_register_style( 'mwiAdminCss', plugins_url('css/admin.css', __FILE__), false, '2.2.0' );
+		wp_register_style( 'mwiAdminCss', plugins_url('css/admin.css', __FILE__) );
 		wp_register_script( 'mwiAdminJS', plugins_url('js/admin.js', __FILE__), array('jquery') );
 	}
 	
-  ################################################
-  ###                                          ###
-  ###            Frontend Scripts              ###
-  ###                                          ###
-  ################################################
+/* 	=============================
+   	Frontend Scripts 
+   	============================= */
 	
 	public function scripts() {
 		wp_register_script( 'mwi_scripts', plugins_url('/js/mwi_scripts.js', __FILE__), array(), false, true);
@@ -187,52 +171,10 @@ class jck_mwi
         wp_enqueue_style( 'mwi_addon_styles' );
     }
 	
-  ################################################
-  ###                                          ###
-  ###                Unlocked                  ###
-  ###                                          ###
-  ################################################
-	
-	public function u($field_name)
-	{
-		switch ($field_name) {
-		    case 'widgetsshortcodes':
-		    	if(md5(self::k($field_name)) == "a529679f11e4e30766ee7b20bdf62547"){ return true; } else { return false; }
-		        break;
-		    case 'widgetspecific':
-		    	if(md5(self::k($field_name)) == "dc87cedbdb5a14e4b39dec55a24f6f0c"){ return true; } else { return false; }
-		        break;
-	    }
-	}
-	
-  ################################################
-  ###                                          ###
-  ###                The Key                   ###
-  ###                                          ###
-  ################################################
-	
-	private function k($field_name)
-	{
-		return get_option('mwi_' . $field_name . '_ac');
-	}
-	
-  ################################################
-  ###                                          ###
-  ###                  Init                    ###
-  ###                                          ###
-  ################################################
-	
-	public function init()
-	{	
-		include('inc/init.php');
-	}
-	
-  ################################################
-  ###                                          ###
-  ###             Admin Message                ###
-  ###                                          ###
-  ################################################
-	
+/* 	=============================
+   	Admin Message 
+   	============================= */	
+   	
 	public function admin_message($message = "", $type = 'updated') {
 		$GLOBALS['mwi_mesage'] = $message;
 		$GLOBALS['mwi_mesage_type'] = $type;
@@ -244,15 +186,13 @@ class jck_mwi
 	    echo '<div class="' . $GLOBALS['mwi_mesage_type'] . '">'.$GLOBALS['mwi_mesage'].'</div>';
 	}
   
-  ################################################
-  ###                                          ###
-  ###            Construct Class               ###
-  ###                                          ###
-  ################################################
+/* 	=============================
+   	Construct Class 
+   	============================= */
   
 	// PHP 4 Compatible Constructor
 	public function jck_mwi() {
-	self::__construct();
+		self::__construct();
 	}
 	
 	// PHP 5 Constructor
@@ -261,8 +201,7 @@ class jck_mwi
 		add_action( 'admin_menu', array(&$this, 'admin_menu') );
 		add_action( 'admin_init', array(&$this, 'admin_init') );
 		add_action( 'wp_enqueue_scripts',  array(&$this, 'scripts') );
-		add_action( 'init', array($this, 'init') );
-		if(( self::u('widgetspecific') || self::u('widgetsshortcodes') ) && self::getValue('styles',0) == 1) { add_action( 'wp_enqueue_scripts', array(&$this, 'stylesheets') ); }
+		if(self::getValue('styles',0) == 1) { add_action( 'wp_enqueue_scripts', array(&$this, 'stylesheets') ); }
 	}  
   
 } // End jck_mwi Class
@@ -271,6 +210,3 @@ global $jck_mwi;
 $jck_mwi = new jck_mwi; // Start an instance of the plugin class
 
 include_once('inc/template-functions.php');
-
-include_once('inc/mwi-shortcodes/mwi-shortcodes.php');
-include_once('inc/mwi-widgets/mwi-widgets.php');
