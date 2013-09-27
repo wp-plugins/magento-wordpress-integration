@@ -1,7 +1,7 @@
 === Magento Wordpress Integration ===
 Contributors: jamesckemp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMUSAPCTF88&lc=US&item_name=James%20Kemp&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
-Tags: magento,wordpress,blocks,integration,sessions,static blocks,magento cart,cart
+Tags: magento,wordpress,block,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
 Tested up to: 3.6
 Stable tag: 3.0.0
@@ -12,13 +12,7 @@ Magento WordPress Integration is the easiest way to get blocks, sessions and pro
 
 == Description ==
 
-**If you are using this plugin, then you may also be interested in my Magento extension - [Single Sign-on for Magento and Wordpress](http://codecanyon.net/item/single-signon-for-magento-and-wordpress/861453?ref=jamesckemp).**
-
-Using the Magento WordPress Integration plugin you will be able to add any Magento blocks to your WordPress theme, including ones you have created yourself and static blocks created through the Magento admin area. You can also add any number of Magento products to your WordPress posts and pages, using the [shortcode & widget add-on](http://mwi-plugin.com/add-ons/shortcodes-widgets/).
-
-You can now show products from a specific Magento category per WordPress category, using the [category specifc widget add-on](http://mwi-plugin.com/add-ons/category-specific-widget/). This is great for content relevant cross-sells.
-
-[Support](http://wordpress.org/support/plugin/magento-wordpress-integration/) | [FAQ](http://mwi-plugin.com/documentation/faq/)
+Magento WordPress Integration allows you to add any Magento blocks to your WordPress theme, including ones you have created yourself, and static blocks created through the Magento admin area. 
 
 The Magento WordPress Integration Plugin allows you to to the following:
 
@@ -28,11 +22,30 @@ The Magento WordPress Integration Plugin allows you to to the following:
 *   Show Magento products on a WordPress post or page by using the shortcode add-on.
 *   Show products from any category using the widget add-on.
 
-**Note:** This plugin does not allow you to completely avoid using Magento on your website, it simply helps you to get your WordPress and Magento themes seamlessly integrated.
+=Add Ons=
 
-**If upgrading, please back up your database first!**
+There are also a number of add-ons available for MWI, these are:
 
-Follow me on Twitter to keep up with the latest updates [@jamesckemp](https://twitter.com/#!/jamesckemp/)
+*	**[Responsive Product Slider](http://www.mwi-plugin.com/add-ons/responsive-product-slider/)** This add-on allows you to display any number of products from a Magento category in a responsive slider, using a shortcode.
+*	**[Shortcodes & Widgets](http://www.mwi-plugin.com/add-ons/shortcodes-widgets/)** This add-on allows you to display products on your WordPress posts and pages using a very simple shortcode. It also comes with a widget for displaying products from a Magento category.
+*	**[Category Specific Widget](http://www.mwi-plugin.com/add-ons/category-specific-widget/)** The Category Specific add-on allows you to associate a Magento category with a WordPress category, so relevant products can be displayed within WordPress category or post pages.
+
+=Useful Links=
+
+* 	[Support](http://wordpress.org/support/plugin/magento-wordpress-integration/)
+*	[FAQ](http://mwi-plugin.com/documentation/faq/)
+*	[MWI Demo](http://demo.mwi-plugin.com/)
+*	[Single Sign-on for Magento and Wordpress](http://codecanyon.net/item/single-signon-for-magento-and-wordpress/861453?ref=jamesckemp)
+
+=Please Leave a Rating=
+
+Your ratings really make a difference to me, and other users! Thanks.
+
+=Notes=
+
+*	This plugin does not allow you to completely avoid using Magento on your website, it simply helps you to get your WordPress and Magento themes seamlessly integrated.
+*	**If upgrading, please back up your database first!**
+*	Follow me on Twitter to keep up with the latest updates [@jamesckemp](https://twitter.com/#!/jamesckemp/)
 
 == Installation ==
 
