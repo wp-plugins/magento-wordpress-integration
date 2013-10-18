@@ -4,10 +4,11 @@ Plugin Name: MWI - Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 3.0.0
+Version: 3.0.1
 Author URI: http://www.jckemp.com/
 */
 
+$GLOBALS['layout'] = '';
 class jck_mwi
 {
   
@@ -17,27 +18,31 @@ class jck_mwi
   	
   	public function layout() {
   	
-  		$app = self::getApp();
-		$layout = $app->getLayout();
-		
-		$module = $app->getRequest()->getModuleName(); // Check if page belongs to Magento
-  	
-		if(!$module) {
+  		if($GLOBALS['layout']) {
+  			return $GLOBALS['layout'];
+  		} else {
+	  		$app = self::getApp();
+			$layout = $app->getLayout();
 			
-	  		$customerSession = Mage::getSingleton('customer/session');	
-			$logged = ($customerSession->isLoggedIn()) ? 'customer_logged_in' : 'customer_logged_out';  
-	  		
-			$layout->getUpdate()
-			    ->addHandle('default')
-			    ->addHandle($logged)
-			    ->load();
-			
-			$layout->generateXml()
-			       ->generateBlocks();
-		       
+			$module = $app->getRequest()->getModuleName(); // Check if page belongs to Magento
+	  	
+			if(!$module) {
+				
+		  		$customerSession = Mage::getSingleton('customer/session');	
+				$logged = ($customerSession->isLoggedIn()) ? 'customer_logged_in' : 'customer_logged_out';  
+		  		
+				$layout->getUpdate()
+				    ->addHandle('default')
+				    ->addHandle($logged)
+				    ->load();
+				
+				$layout->generateXml()
+				    ->generateBlocks();
+			       
+			}
+			$GLOBALS['layout'] = $layout;
+			return $layout;
 		}
-		
-		return $layout;
   	} 
   	
   	public function getApp() {

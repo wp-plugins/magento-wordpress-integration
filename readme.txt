@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMU
 Tags: magento,wordpress,block,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
 Tested up to: 3.6
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,9 @@ Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/d
 
 == Changelog ==
 
+= 3.0.1 =
+* Store layout as a global to improve performance (With thanks to LogicSpot)
+
 = 3.0.0 =
 * Moved add-ons to their own plugins, available via download.
 
@@ -105,6 +108,9 @@ Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/d
 * This is the first release of the Magento WordPress Integration Plugin.
 
 == Upgrade Notice ==
+
+= 3.0.1 =
+* Store layout as a global to improve performance (With thanks to LogicSpot)
 
 = 2.2.0 =
 * Added the option to set the Magento Website Code - I hope to integrate this with WPML in the near future.
