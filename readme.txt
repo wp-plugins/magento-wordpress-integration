@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMU
 Tags: magento,wordpress,block,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
 Tested up to: 4.0.1
-Stable tag: 3.1.1
+Stable tag: 3.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,9 @@ Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/d
 Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/documentation/faq/) for frequently asked questions.
 
 == Changelog ==
+
+= 3.1.2 =
+[update] Check for valid functions.php to reduce errors from occuring
 
 = 3.1.1 =
 [readme] Updated readme
