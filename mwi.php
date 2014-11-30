@@ -4,57 +4,142 @@ Plugin Name: MWI - Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 3.0.1
+Version: 3.1.0
 Author URI: http://www.jckemp.com/
+License: GPL
+Copyright: James Kemp
 */
 
-$GLOBALS['layout'] = '';
-class jck_mwi
-{
-  
-/* 	=============================
-   	Core Functions 
-   	============================= */
-  	
-  	public function layout() {
-  	
-  		if($GLOBALS['layout']) {
-  			return $GLOBALS['layout'];
-  		} else {
-	  		$app = self::getApp();
-			$layout = $app->getLayout();
-			
-			$module = $app->getRequest()->getModuleName(); // Check if page belongs to Magento
-	  	
-			if(!$module) {
-				
-		  		$customerSession = Mage::getSingleton('customer/session');	
-				$logged = ($customerSession->isLoggedIn()) ? 'customer_logged_in' : 'customer_logged_out';  
-		  		
-				$layout->getUpdate()
-				    ->addHandle('default')
-				    ->addHandle($logged)
-				    ->load();
-				
-				$layout->generateXml()
-				    ->generateBlocks();
-			       
-			}
-			$GLOBALS['layout'] = $layout;
-			return $layout;
-		}
-  	} 
-  	
-  	public function getApp() {
-	  	if(class_exists( 'Mage' ) && !is_admin()) {
-	  		$app = Mage::app(self::getValue('websitecode','base'), 'website');
-	  		return $app;
-	  	}
-  	}
+class jck_mwi {
+    
+    public $name = 'Magento WordPress Integration';
+    public $shortname = 'Mage/WP';
+    public $slug = 'jckmwi';
+    public $version = "3.1.0";
+    public $plugin_path;
+    public $plugin_url;
 	
-/* 	=============================
-   	Get values to prevent errors 
-   	============================= */
+/**	=============================
+    *
+    * Construct the plugin
+    *
+    ============================= */
+   	
+    public function __construct()
+    {
+        
+        $this->plugin_path = plugin_dir_path( __FILE__ );
+        $this->plugin_url = plugin_dir_url( __FILE__ );
+        
+        // Hook up to the init action
+        add_action( 'init', array( &$this, 'initiate_hook' ) );
+        
+    }
+
+/**	=============================
+    *
+    * Initiate Plugin
+    *
+    * Run after the current user is set (http://codex.wordpress.org/Plugin_API/Action_Reference)
+    *
+    ============================= */
+   	
+	public function initiate_hook()
+	{	    
+	    
+	    // Run on admin
+        if(is_admin())
+        {
+            add_action( 'admin_menu',           array(&$this, 'add_settings_page') );
+        }
+        
+        // Run on frontend
+        else
+        {
+            add_action( 'template_redirect',    array(&$this, 'mage') );
+    		add_action( 'wp_enqueue_scripts',   array(&$this, 'scripts') );
+        }
+        
+	}
+	
+/**	=============================
+    *
+    * Get Layout
+    *
+    * Add specific layout handles to our layout and then load them,
+    * either from the global, or dynamically
+    *
+    * @return object
+    *
+    ============================= */
+  	
+    public function layout() {
+    
+        if($GLOBALS['layout']) {
+        
+            $layout = $GLOBALS['layout'];
+            
+        } else {
+            
+            $app = $this->getApp();
+            $layout = $app->getLayout();            
+            $module = $app->getRequest()->getModuleName(); // Check if page belongs to Magento
+            
+            if(!$module):
+            
+                $customerSession = Mage::getSingleton('customer/session');	
+                $logged = ($customerSession->isLoggedIn()) ? 'customer_logged_in' : 'customer_logged_out';  
+                
+                $layout->getUpdate()
+                    ->addHandle('default')
+                    ->addHandle($logged)
+                    ->load();
+                
+                $layout->generateXml()
+                    ->generateBlocks();
+            
+            endif;
+            
+            $GLOBALS['layout'] = $layout;
+        
+        }
+        
+        return $layout;
+        
+    } 
+
+/**	=============================
+    *
+    * Get App
+    *
+    * @return object
+    *
+    ============================= */
+    
+    public function getApp() {
+        
+        $app = false;
+        
+        if(class_exists( 'Mage' ) && !is_admin()):
+        
+            $app = Mage::app($this->getValue('websitecode', 'base'), 'website');
+            
+        endif;
+        
+        return $app;
+    
+    }
+	
+/**	=============================
+    *
+    * Get Value
+    *
+    * Helper function that allows me to set a default value if 
+    * the one I'm requesting does not exist
+    *
+    * @return object
+    *
+    ============================= */
 	
 	public function getValue($key, $default = '') {		
 	
@@ -76,26 +161,29 @@ class jck_mwi
 	
 	}
 	
-/* 	=============================
-   	Initiate Mage.php 
-   	============================= */
-	
-	public function mage() {
+/**	=============================
+    *
+    * Initiate Mage
+    *
+    * Include Mage.php and then configure app and sessions
+    * based on package/theme
+    *
+    ============================= */
+    
+    public function mage() {
 		
-		// Mage Path
-		$magepath = self::getValue('magepath');
-		
-		// Theme Info
-		$package = self::getValue('package','default');
-		$theme = self::getValue('theme','default');
-		
+		$magepath = $this->get_mage_path();
+        
 		if ( !empty( $magepath ) && file_exists( $magepath ) && !is_dir( $magepath )) {
+    		
+    		$package = $this->getValue('package','default');
+    		$theme = $this->getValue('theme','default');
 			
 			require_once($magepath);
 			umask(0);
 			
 			if(class_exists( 'Mage' ) && !is_admin()) {
-				$app = self::getApp();
+				$app = $this->getApp();
 				
 				$locale = $app->getLocale()->getLocaleCode();
 				Mage::getSingleton('core/translate')->setLocale($locale)->init('frontend', true);
@@ -112,106 +200,155 @@ class jck_mwi
 		
 	}
 	
-/* 	=============================
-   	Admin Page 
-   	============================= */
-	
-	// Add Admin Page and trigger settings
-	public function admin_menu() {		
-		$page = add_options_page( 'Magento WordPress Integration Settings', 'Mage/WP', 'administrator', 'mwi', array(&$this, 'mwi_admin_page') );
-		add_action( 'admin_init', array(&$this, 'mwi_settings') );
-		add_action( 'admin_print_styles-' . $page, array(&$this, 'admin_styles') );		
-	}
-	
-	// Build admin Page
-	public function mwi_admin_page() {		
-		// Mage Path
-		$magepath = self::getValue('magepath');
+/**	=============================
+    *
+    * Add Settings Page
+    *
+    ============================= */
+    
+	public function add_settings_page() {
+    	
+		$page = add_options_page( $this->name, $this->shortname, 'administrator', $this->slug, array(&$this, 'render_settings_page') );
+		add_action( 'admin_init', array(&$this, 'register_mwi_settings') );
+		add_action( 'admin_print_styles-' . $page, array(&$this, 'admin_styles_scripts') );
 		
-		// notification/error messages
-		if ( !empty( $magepath ) && !file_exists( $magepath ) ) {
-			$message = '<div class="mwi-error">'.__('Invalid URL','mwi').'</div>';
-		} elseif ( !empty( $magepath ) && file_exists( $magepath ) ) {
-			self::mage();
-			$message = ( class_exists( 'Mage' ) ) ? '<div class="mwi-success">'.__('Mage.php was found!','mwi').'</div>' : '<div class="mwi-error">'.__('Mage object not found!','mwi').'</div>';
-		} else {
-			$message = '';
-		}
+	}
 	
+/**	=============================
+    *
+    * Render Settings Page
+    *
+    ============================= */
+
+	public function render_settings_page() {		
+    	
 		require_once("inc/admin.php");		
+	
+	}
+
+/**	=============================
+    *
+    * Check Mage.php
+    *
+    * Check if Mage.php has been found and works
+    *
+    * @return array Returns array with true/false, and message and class for settings page
+    *
+    ============================= */
+	
+	public function check_mage() {
+    	
+    	$return = array(
+        	'result' => false,
+        	'message' => '',
+        	'class' => ''
+    	);
+    	
+		$magepath = $this->get_mage_path();
+		
+		if ( !empty( $magepath ) && !file_exists( $magepath ) ):
+    		
+    		$return['message'] = __('Invalid URL', $this->slug);
+    		$return['class'] = 'mwi-success';
+    		
+		elseif ( !empty( $magepath ) && file_exists( $magepath ) ):
+			
+			$this->mage();
+			
+			if( class_exists( 'Mage' ) ):
+			    
+			    $return['result'] = true;
+			    $return['message'] = __('Mage.php was found!', $this->slug);
+			    $return['class'] = 'mwi-success';
+			    
+			else:
+			    
+			    $return['message'] = __('Mage object not found!', $this->slug);
+			    $return['class'] = 'mwi-error';
+			    
+			endif;
+		
+		endif;
+		
+		return $return;
+		
+	}
+
+/**	=============================
+    *
+    * Get Mage.php Path
+    *
+    * @return str Path to Mage.php, relative or absolute
+    *
+    ============================= */
+	
+	public function get_mage_path() {
+    	
+    	// get path to Mage.php
+		$magepath = $this->getValue('magepath');
+		
+		//check for relative path from WordPress root
+        if(file_exists(ABSPATH . $magepath)) {
+        	$magepath = ABSPATH . $magepath;
+        }
+        
+        return $magepath;
+        
 	}
 	
-	// Validate Settings 
-	public function validate_mwi_settings($data) {		
-		//$data['multiple_sv'] = array_values($data['multiple_sv']);
+/**	=============================
+    *
+    * Validate WMI Settings
+    *
+    * @return array
+    *
+    ============================= */
+    
+	public function validate_mwi_settings($data) {
+    	
 		return $data;	
+	
 	}
 	
-	// Register MWI Options
-	public function mwi_settings() {
+/**	=============================
+    *
+    * Register MWI Settings
+    *
+    ============================= */
+    
+	public function register_mwi_settings() {
 		register_setting( 'mwi-main-settings', 'mwi_options', array(&$this, 'validate_mwi_settings') );
 	}
 	
-	// Enqueue Styles and Scripts
-	public function admin_styles() {
+/**	=============================
+    *
+    * Admin Styles and Scripts
+    *
+    ============================= */
+    
+	public function admin_styles_scripts() {
+        
+        wp_register_style( 'mwiAdminCss', plugins_url('css/admin.css', __FILE__) );
+		wp_register_script( 'mwiAdminJS', plugins_url('js/admin.js', __FILE__), array('jquery') );
+		
 		wp_enqueue_style( 'mwiAdminCss' );
 		wp_enqueue_script( 'mwiAdminJS' );
-	}
-	public function admin_init() {
-		wp_register_style( 'mwiAdminCss', plugins_url('css/admin.css', __FILE__) );
-		wp_register_script( 'mwiAdminJS', plugins_url('js/admin.js', __FILE__), array('jquery') );
+		
 	}
 	
-/* 	=============================
-   	Frontend Scripts 
-   	============================= */
+/**	=============================
+    *
+    * Frontend Scripts
+    *
+    ============================= */
 	
 	public function scripts() {
 		wp_register_script( 'mwi_scripts', plugins_url('/js/mwi_scripts.js', __FILE__), array(), false, true);
 		wp_enqueue_script( 'mwi_scripts' );
 	} 
-	
-	public function stylesheets() {
-        wp_register_style( 'mwi_addon_styles', plugins_url('css/addon-styles.css', __FILE__) );
-        wp_enqueue_style( 'mwi_addon_styles' );
-    }
-	
-/* 	=============================
-   	Admin Message 
-   	============================= */	
-   	
-	public function admin_message($message = "", $type = 'updated') {
-		$GLOBALS['mwi_mesage'] = $message;
-		$GLOBALS['mwi_mesage_type'] = $type;
-		
-		add_action( 'admin_notices', array(&$this, 'mwi_admin_notice') );
-	}
-	
-	public function mwi_admin_notice() {
-	    echo '<div class="' . $GLOBALS['mwi_mesage_type'] . '">'.$GLOBALS['mwi_mesage'].'</div>';
-	}
   
-/* 	=============================
-   	Construct Class 
-   	============================= */
-  
-	// PHP 4 Compatible Constructor
-	public function jck_mwi() {
-		self::__construct();
-	}
-	
-	// PHP 5 Constructor
-	public function __construct() { 
-		add_action( 'template_redirect', array(&$this, 'mage') );
-		add_action( 'admin_menu', array(&$this, 'admin_menu') );
-		add_action( 'admin_init', array(&$this, 'admin_init') );
-		add_action( 'wp_enqueue_scripts',  array(&$this, 'scripts') );
-		if(self::getValue('styles',0) == 1) { add_action( 'wp_enqueue_scripts', array(&$this, 'stylesheets') ); }
-	}  
-  
-} // End jck_mwi Class
+}
 
-global $jck_mwi;
-$jck_mwi = new jck_mwi; // Start an instance of the plugin class
+$jck_mwi = new jck_mwi();
 
 include_once('inc/template-functions.php');

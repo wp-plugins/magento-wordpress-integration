@@ -185,6 +185,10 @@ html[xmlns] .clearfix {
 	padding: 0;
 }
 
+.mwi_settings h3 {
+    border-bottom: 1px solid #ebebeb;
+}
+
 .mwi_settings .form-table {
 	margin: 0;
 	border-collapse: separate;
@@ -194,10 +198,15 @@ html[xmlns] .clearfix {
 	.mwi_settings .form-table th {
 		border-top: 1px solid #fff;
 		border-bottom: 1px solid #ddd;
+		vertical-align: top;
 	}
 	.mwi_settings .form-table th {
 		border-right: 1px solid #ebebeb;
+		padding-left: 12px;
 	}
+	    .mwi_settings .form-table th p {
+    	    font-weight: normal;
+	    }
 	
 	.mwi_settings .form-table tr:last-child td,
 	.mwi_settings .form-table tr:last-child th {
@@ -227,6 +236,9 @@ html[xmlns] .clearfix {
 				border: 1px solid #DFDFDF;
 				padding: 5px 10px;
 			}
+			    .mwi_settings .form-table td h4 {
+    			    margin-top: 0;
+			    }
 	
 	#svc_repeaters {
 		padding: 10px 0 0;

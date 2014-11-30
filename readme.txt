@@ -3,8 +3,8 @@ Contributors: jamesckemp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMUSAPCTF88&lc=US&item_name=James%20Kemp&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: magento,wordpress,block,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
-Tested up to: 3.6
-Stable tag: 3.0.1
+Tested up to: 4.0.1
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,7 @@ The Magento WordPress Integration Plugin allows you to to the following:
 *   Show Magento products on a WordPress post or page by using the shortcode add-on.
 *   Show products from any category using the widget add-on.
 
-= Add Ons =
+=Add Ons=
 
 There are also a number of add-ons available for MWI, these are:
 
@@ -30,18 +30,18 @@ There are also a number of add-ons available for MWI, these are:
 *	**[Shortcodes & Widgets](http://www.mwi-plugin.com/add-ons/shortcodes-widgets/)** This add-on allows you to display products on your WordPress posts and pages using a very simple shortcode. It also comes with a widget for displaying products from a Magento category.
 *	**[Category Specific Widget](http://www.mwi-plugin.com/add-ons/category-specific-widget/)** The Category Specific add-on allows you to associate a Magento category with a WordPress category, so relevant products can be displayed within WordPress category or post pages.
 
-= Useful Links =
+=Useful Links=
 
 * 	[Support](http://wordpress.org/support/plugin/magento-wordpress-integration/)
 *	[FAQ](http://mwi-plugin.com/documentation/faq/)
 *	[MWI Demo](http://demo.mwi-plugin.com/)
 *	[Single Sign-on for Magento and Wordpress](http://codecanyon.net/item/single-signon-for-magento-and-wordpress/861453?ref=jamesckemp)
 
-= Please Leave a Rating =
+=Please Leave a Rating=
 
 Your ratings really make a difference to me, and other users! Thanks.
 
-= Notes =
+=Notes=
 
 *	This plugin does not allow you to completely avoid using Magento on your website, it simply helps you to get your WordPress and Magento themes seamlessly integrated.
 *	**If upgrading, please back up your database first!**
@@ -57,8 +57,8 @@ Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/d
 
 == Changelog ==
 
-= 3.0.1 =
-* Store layout as a global to improve performance (With thanks to LogicSpot)
+= 3.1.0 =
+[update] Updated plugin structure and refined coding
 
 = 3.0.0 =
 * Moved add-ons to their own plugins, available via download.
@@ -108,9 +108,6 @@ Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/d
 * This is the first release of the Magento WordPress Integration Plugin.
 
 == Upgrade Notice ==
-
-= 3.0.1 =
-* Store layout as a global to improve performance (With thanks to LogicSpot)
 
 = 2.2.0 =
 * Added the option to set the Magento Website Code - I hope to integrate this with WPML in the near future.
