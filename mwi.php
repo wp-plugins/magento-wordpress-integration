@@ -4,7 +4,7 @@ Plugin Name: MWI - Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 3.1.1
+Version: 3.1.2
 Author URI: http://www.jckemp.com/
 License: GPL
 Copyright: James Kemp
@@ -172,31 +172,35 @@ class jck_mwi {
     
     public function mage() {
 		
-		$magepath = $this->get_mage_path();
-        
-		if ( !empty( $magepath ) && file_exists( $magepath ) && !is_dir( $magepath )) {
-    		
-    		$package = $this->getValue('package','default');
-    		$theme = $this->getValue('theme','default');
-			
-			require_once($magepath);
-			umask(0);
-			
-			if(class_exists( 'Mage' ) && !is_admin()) {
-				$app = $this->getApp();
-				
-				$locale = $app->getLocale()->getLocaleCode();
-				Mage::getSingleton('core/translate')->setLocale($locale)->init('frontend', true);
-				
-				// Session setup
-				Mage::getSingleton('core/session', array('name'=>'frontend'));
-				Mage::getSingleton("checkout/session");
-				// End session setups
-				
-				Mage::getDesign()->setPackageName($package)->setTheme($theme); // Set theme so Magento gets blocks from the right place.
-			}
-			
-		}
+		if($this->check_functions_file()):
+		
+    		$magepath = $this->get_mage_path();
+            
+    		if ( !empty( $magepath ) && file_exists( $magepath ) && !is_dir( $magepath )) {
+        		
+        		$package = $this->getValue('package','default');
+        		$theme = $this->getValue('theme','default');
+    			
+    			require_once($magepath);
+    			umask(0);
+    			
+    			if(class_exists( 'Mage' ) && !is_admin()) {
+    				$app = $this->getApp();
+    				
+    				$locale = $app->getLocale()->getLocaleCode();
+    				Mage::getSingleton('core/translate')->setLocale($locale)->init('frontend', true);
+    				
+    				// Session setup
+    				Mage::getSingleton('core/session', array('name'=>'frontend'));
+    				Mage::getSingleton("checkout/session");
+    				// End session setups
+    				
+    				Mage::getDesign()->setPackageName($package)->setTheme($theme); // Set theme so Magento gets blocks from the right place.
+    			}
+    			
+    		}
+		
+		endif;
 		
 	}
 	
@@ -220,9 +224,16 @@ class jck_mwi {
     *
     ============================= */
 
-	public function render_settings_page() {		
+	public function render_settings_page() {	
     	
-		require_once("inc/admin.php");		
+    	$checkMage = $this->check_mage(true);
+    	$magepath = $this->get_mage_path();
+    	
+    	if($checkMage['result'] == false || ($this->check_functions_file() && $checkMage['result'] == true)):
+    	    require_once("inc/admin.php");
+    	else:
+    	    require_once("inc/admin-install.php");
+    	endif;	
 	
 	}
 
@@ -232,11 +243,12 @@ class jck_mwi {
     *
     * Check if Mage.php has been found and works
     *
+    * @param bool Check for the file only? If false, will also check for Mage object
     * @return array Returns array with true/false, and message and class for settings page
     *
     ============================= */
 	
-	public function check_mage() {
+	public function check_mage($pathOnly = false) {
     	
     	$return = array(
         	'result' => false,
@@ -246,12 +258,21 @@ class jck_mwi {
     	
 		$magepath = $this->get_mage_path();
 		
-		if ( !empty( $magepath ) && !file_exists( $magepath ) ):
+		if ( (!empty( $magepath ) && !file_exists( $magepath )) || is_dir( $magepath ) ):
     		
     		$return['message'] = __('Invalid URL', $this->slug);
-    		$return['class'] = 'mwi-success';
+    		$return['class'] = 'mwi-error';
     		
-		elseif ( !empty( $magepath ) && file_exists( $magepath ) ):
+		elseif ( !empty( $magepath ) && file_exists( $magepath ) && !is_dir( $magepath ) ):
+		
+		    if($pathOnly) {
+    		    
+    		    $return['result'] = true;
+			    $return['message'] = __('Mage.php was found!', $this->slug);
+			    $return['class'] = 'mwi-success';
+			    
+    		    return $return;
+		    }
 			
 			$this->mage();
 			
@@ -292,9 +313,26 @@ class jck_mwi {
         	$magepath = ABSPATH . $magepath;
         }
         
+        $magepath = str_replace('//', '/', $magepath);
+        
         return $magepath;
         
 	}
+
+/**	=============================
+    *
+    * Check functions.php
+    *
+    * @return bool
+    *
+    ============================= */
+    
+    public function check_functions_file() {
+        $magepath = $this->get_mage_path();
+        $apppath = str_replace('Mage.php', '', $magepath);
+        
+        return file_exists($apppath.'code/local/Mage/Core/functions.php');   
+    }
 	
 /**	=============================
     *
