@@ -4,7 +4,7 @@ Plugin Name: MWI - Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 3.1.0
+Version: 3.1.1
 Author URI: http://www.jckemp.com/
 License: GPL
 Copyright: James Kemp
