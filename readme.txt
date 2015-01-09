@@ -3,8 +3,8 @@ Contributors: jamesckemp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMUSAPCTF88&lc=US&item_name=James%20Kemp&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: magento,wordpress,block,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
-Tested up to: 4.0.1
-Stable tag: 3.1.2
+Tested up to: 4.1
+Stable tag: 3.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,11 @@ Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/d
 Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/documentation/faq/) for frequently asked questions.
 
 == Changelog ==
+
+= 3.1.3 (01/01/15) =
+[update] Recreate addon styles and assets folder structure
+[update] New styles for new addons
+[update] Remove and reorganise assets
 
 = 3.1.2 =
 [update] Check for valid functions.php to reduce errors from occuring

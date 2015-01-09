@@ -4,7 +4,7 @@ Plugin Name: MWI - Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 3.1.2
+Version: 3.1.3
 Author URI: http://www.jckemp.com/
 License: GPL
 Copyright: James Kemp
@@ -15,7 +15,7 @@ class jck_mwi {
     public $name = 'Magento WordPress Integration';
     public $shortname = 'Mage/WP';
     public $slug = 'jckmwi';
-    public $version = "3.1.0";
+    public $version = "3.1.3";
     public $plugin_path;
     public $plugin_url;
 	
@@ -57,7 +57,7 @@ class jck_mwi {
         else
         {
             add_action( 'template_redirect',    array(&$this, 'mage') );
-    		add_action( 'wp_enqueue_scripts',   array(&$this, 'scripts') );
+    		add_action( 'wp_enqueue_scripts',   array(&$this, 'frontend_styles_scripts') );
         }
         
 	}
@@ -366,11 +366,13 @@ class jck_mwi {
     
 	public function admin_styles_scripts() {
         
-        wp_register_style( 'mwiAdminCss', plugins_url('css/admin.css', __FILE__) );
-		wp_register_script( 'mwiAdminJS', plugins_url('js/admin.js', __FILE__), array('jquery') );
+        // styles
+        wp_register_style( 'mwi-admin-css', plugins_url('assets/admin/css/admin.css', __FILE__) );
+		wp_enqueue_style( 'mwi-admin-css' );
 		
-		wp_enqueue_style( 'mwiAdminCss' );
-		wp_enqueue_script( 'mwiAdminJS' );
+		// scripts
+		//wp_register_script( 'mwi-admin-js', plugins_url('assets/admin/js/scripts.min.js', __FILE__), array('jquery') );
+		//wp_enqueue_script( 'mwi-admin-js' );
 		
 	}
 	
@@ -380,10 +382,40 @@ class jck_mwi {
     *
     ============================= */
 	
-	public function scripts() {
-		wp_register_script( 'mwi_scripts', plugins_url('/js/mwi_scripts.js', __FILE__), array(), false, true);
-		wp_enqueue_script( 'mwi_scripts' );
+	public function frontend_styles_scripts() {
+    	
+    	// styles
+    	if( $this->active_addons() &&  $this->getValue('styles') ) {
+            wp_register_style( 'mwi-addon-styles', plugins_url('assets/frontend/css/addon-styles.css', __FILE__) );
+		    wp_enqueue_style( 'mwi-addon-styles' );
+		}
+		
+    	// scripts
+		wp_register_script( 'mwi-js', plugins_url('/assets/frontend/js/scripts.min.js', __FILE__), array(), false, true);
+		wp_enqueue_script( 'mwi-js' );
+		
 	} 
+	
+/**	=============================
+    *
+    * Check for Active Addons
+    *
+    * return array|bool Returns array of active addons, if found, or false if not
+    *
+    ============================= */
+    
+    public function active_addons() {
+        
+        $activeAddons = array();
+        
+        if ( in_array( 'mwi-shortcodes/mwi-shortcodes.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) )
+            $activeAddons[] = 'mwi-shortcodes';
+            
+        if( empty($activeAddons) )
+            return false;
+        
+        return $activeAddons;        
+    }
   
 }
 

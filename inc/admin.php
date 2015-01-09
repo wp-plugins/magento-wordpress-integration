@@ -89,16 +89,21 @@
         			
     			endif;
     			
-    			/*
-    			$mwiSettings[] = array(
-        		    'title'         =>  __('Default Styles', $jck_mwi->slug),
-        		    'description'   =>  __('Check the box to enable the default css for add-ons. If you want to edit the styles, uncheck the box and copy the contents of css/addon-styles.css to your own stylesheet.', $jck_mwi->slug),
-        		    'name'          =>  'styles',
-        		    'type'          =>  'checkbox',
-        		    'value'         =>  $jck_mwi->getValue('styles', 0),
-        		    'additional'    =>  ''
-    			);
-    			*/
+    			if( $this->active_addons() ) {
+        			
+        			$mwiSettings[] = array(
+            		    'title'         =>  __('Default Styles', $jck_mwi->slug),
+            		    'description'   =>  array(
+            		                            __('Check the box to enable the default css for add-ons.', $jck_mwi->slug)
+                                            ),
+            		    'name'          =>  'styles',
+            		    'type'          =>  'checkbox',
+            		    'value'         =>  $jck_mwi->getValue('styles', 0),
+            		    'additional'    =>  ''
+        			);
+        			
+    			}
+    			
     			
     			?>    			
     			
