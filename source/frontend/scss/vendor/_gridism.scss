@@ -1,0 +1,109 @@
+/*
+ * Gridism JCKified
+ * A simple, responsive, and handy CSS grid by @cobyism
+ * https://github.com/cobyism/gridism
+ */
+
+/* Preserve some sanity */
+.jck-grid,
+.jck-unit {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* Set up some rules to govern the grid */
+.jck-grid {
+  display: block;
+  clear: both;
+  padding: 0;
+  margin: 0 -10px;
+}
+.jck-grid .jck-unit {
+  float: left;
+  width: 100%;
+  padding: $spacing $spacing $spacing*2;
+}
+
+/* Nested grids already have padding though, so let’s nuke it */
+.jck-unit .jck-unit:first-child { padding-left: 0; }
+.jck-unit .jck-unit:last-child { padding-right: 0; }
+.jck-unit .jck-grid:first-child > .jck-unit { padding-top: 0; }
+.jck-unit .jck-grid:last-child > .jck-unit { padding-bottom: 0; }
+
+/* Let people nuke the gutters/padding completely in a couple of ways */
+.jck-no-gutters .jck-unit,
+.jck-unit.jck-no-gutters {
+  padding: 0 !important;
+}
+
+/* Wrapping at a maximum width is optional */
+.jck-wrap .jck-grid,
+.jck-grid.jck-wrap {
+  max-width: 978px;
+  margin: 0 auto;
+}
+
+/* Width classes also have shorthand versions numbered as fractions
+ * For example: for a grid unit 1/3 (one third) of the parent width,
+ * simply apply class="w-1-3" to the element. */
+.jck-grid .jck-whole,          .jck-grid .jck-w-1-1 { width: 100%; }
+.jck-grid .jck-half,           .jck-grid .jck-w-1-2 { width: 50%; }
+.jck-grid .jck-one-third,      .jck-grid .jck-w-1-3 { width: 33.3332%; }
+.jck-grid .jck-two-thirds,     .jck-grid .jck-w-2-3 { width: 66.6665%; }
+.jck-grid .jck-one-quarter,    .jck-grid .jck-w-1-4 { width: 25%; }
+.jck-grid .jck-three-quarters, .jck-grid .jck-w-3-4 { width: 75%; }
+.jck-grid .jck-one-fifth,      .jck-grid .jck-w-1-5 { width: 20%; }
+.jck-grid .jck-two-fifths,     .jck-grid .jck-w-2-5 { width: 40%; }
+.jck-grid .jck-three-fifths,   .jck-grid .jck-w-3-5 { width: 60%; }
+.jck-grid .jck-four-fifths,    .jck-grid .jck-w-4-5 { width: 80%; }
+.jck-grid .jck-golden-small,   .jck-grid .jck-w-g-s { width: 38.2716%; } /* Golden section: smaller piece */
+.jck-grid .jck-golden-large,   .jck-grid .jck-w-g-l { width: 61.7283%; } /* Golden section: larger piece */
+
+/* Clearfix after every .grid */
+.jck-grid {
+  *zoom: 1;
+}
+.jck-grid:before, .jck-grid:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.jck-grid:after {
+  clear: both;
+}
+
+/* Utility classes */
+.jck-align-center { text-align: center; }
+.jck-align-left   { text-align: left; }
+.jck-align-right  { text-align: right; }
+.jck-pull-left    { float: left; }
+.jck-pull-right   { float: right; }
+
+/* Responsive Stuff */
+@media screen and (max-width: 568px) {
+  /* Stack anything that isn’t full-width on smaller screens */
+  .jck-grid .jck-unit {
+    width: 100% !important;
+  }
+  .jck-unit .jck-grid .jck-unit {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  /* Sometimes, you just want to be different on small screens */
+  .jck-center-on-mobiles {
+    text-align: center !important;
+  }
+  .jck-hide-on-mobiles {
+    display: none !important;
+  }
+}
+
+/* Expand the wrap a bit further on larger screens */
+@media screen and (min-width: 1180px) {
+  .jck-wider .jck-grid {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+}
