@@ -58,18 +58,18 @@ Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/d
 == Changelog ==
 
 = 3.1.3 (01/01/15) =
-[update] Recreate addon styles and assets folder structure
-[update] New styles for new addons
-[update] Remove and reorganise assets
+* [update] Recreate addon styles and assets folder structure
+* [update] New styles for new addons
+* [update] Remove and reorganise assets
 
 = 3.1.2 =
-[update] Check for valid functions.php to reduce errors from occuring
+* [update] Check for valid functions.php to reduce errors from occuring
 
 = 3.1.1 =
-[readme] Updated readme
+* [readme] Updated readme
 
 = 3.1.0 =
-[update] Updated plugin structure and refined coding
+* [update] Updated plugin structure and refined coding
 
 = 3.0.0 =
 * Moved add-ons to their own plugins, available via download.
