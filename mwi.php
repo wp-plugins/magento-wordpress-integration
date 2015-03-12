@@ -4,7 +4,7 @@ Plugin Name: MWI - Mage/WP Integration
 Plugin URI: http://wordpress.org/extend/plugins/magento-wordpress-integration/
 Description: Magento WordPress Integration is the simplest way to get blocks & sessions from your Magento store.
 Author: James Kemp
-Version: 3.1.3
+Version: 3.1.4
 Author URI: http://www.jckemp.com/
 License: GPL
 Copyright: James Kemp
@@ -15,9 +15,10 @@ class jck_mwi {
     public $name = 'Magento WordPress Integration';
     public $shortname = 'Mage/WP';
     public $slug = 'jckmwi';
-    public $version = "3.1.3";
+    public $version = "3.1.4";
     public $plugin_path;
     public $plugin_url;
+    public $helpers;
 	
 /**	=============================
     *
@@ -30,6 +31,10 @@ class jck_mwi {
         
         $this->plugin_path = plugin_dir_path( __FILE__ );
         $this->plugin_url = plugin_dir_url( __FILE__ );
+        
+        // set up additional classes
+        require_once('class-helpers.php');
+        $this->helpers = new jck_mwi_helpers();
         
         // Hook up to the init action
         add_action( 'init', array( &$this, 'initiate_hook' ) );
@@ -47,17 +52,37 @@ class jck_mwi {
 	public function initiate_hook()
 	{	    
 	    
+	    $active_addons = $this->active_addons();
+	    
 	    // Run on admin
         if(is_admin())
         {
+            
             add_action( 'admin_menu',           array(&$this, 'add_settings_page') );
+            
+            if(is_admin() && $this->check_functions_file())
+            {
+                add_action( 'admin_head',               array(&$this, 'active_plugins_js') );
+                
+                // if shortcodes or cat listing addons are active, add mce button
+                
+                if( $active_addons && ( in_array( 'mwi-shortcodes', $active_addons ) || in_array( 'mwi-category-listing', $active_addons ) ) ) {
+                    
+                    add_action( 'admin_head',               array(&$this, 'add_mce_button') );
+                    add_action( 'admin_enqueue_scripts',    array(&$this, 'add_mce_button_css') );
+                
+                }
+            }
+                
         }
         
         // Run on frontend
         else
         {
+            
             add_action( 'template_redirect',    array(&$this, 'mage') );
     		add_action( 'wp_enqueue_scripts',   array(&$this, 'frontend_styles_scripts') );
+        
         }
         
 	}
@@ -87,8 +112,8 @@ class jck_mwi {
             
             if(!$module):
             
-                $customerSession = Mage::getSingleton('customer/session');	
-                $logged = ($customerSession->isLoggedIn()) ? 'customer_logged_in' : 'customer_logged_out';  
+                $customer_session = Mage::getSingleton('customer/session');	
+                $logged = ($customer_session->isLoggedIn()) ? 'customer_logged_in' : 'customer_logged_out';  
                 
                 $layout->getUpdate()
                     ->addHandle('default')
@@ -214,7 +239,7 @@ class jck_mwi {
     	
 		$page = add_options_page( $this->name, $this->shortname, 'administrator', $this->slug, array(&$this, 'render_settings_page') );
 		add_action( 'admin_init', array(&$this, 'register_mwi_settings') );
-		add_action( 'admin_print_styles-' . $page, array(&$this, 'admin_styles_scripts') );
+		add_action( 'admin_print_styles-' . $page, array(&$this, 'admin_styles') );
 		
 	}
 	
@@ -355,27 +380,106 @@ class jck_mwi {
     ============================= */
     
 	public function register_mwi_settings() {
+    	
 		register_setting( 'mwi-main-settings', 'mwi_options', array(&$this, 'validate_mwi_settings') );
+		
 	}
 	
 /**	=============================
     *
-    * Admin Styles and Scripts
+    * Admin Styles
     *
     ============================= */
     
-	public function admin_styles_scripts() {
+	public function admin_styles() {
         
         // styles
         wp_register_style( 'mwi-admin-css', plugins_url('assets/admin/css/admin.css', __FILE__) );
 		wp_enqueue_style( 'mwi-admin-css' );
-		
-		// scripts
-		//wp_register_script( 'mwi-admin-js', plugins_url('assets/admin/js/scripts.min.js', __FILE__), array('jquery') );
-		//wp_enqueue_script( 'mwi-admin-js' );
-		
+			
 	}
+
+/**	=============================
+    *
+    * Admin Head Active Plugins JS
+    *
+    ============================= */
 	
+	public function active_plugins_js() {
+    	
+    	$active_addons = $this->active_addons();
+    	
+    	if($active_addons) {
+        	
+        	?>
+            <script type="text/javascript">
+            var mwi_active_addons = <?php echo json_encode($active_addons); ?>;
+            </script>
+            <?php
+                
+        }
+        
+	}
+
+/**	=============================
+    *
+    * MCE - add button
+    *
+    ============================= */
+
+    function add_mce_button() {
+
+        // check user permissions
+        if ( !current_user_can('edit_posts') && !current_user_can('edit_pages') ) {
+            return;
+        }
+        
+    	// check if WYSIWYG is enabled
+    	if ( get_user_option('rich_editing') == 'true') {
+    		add_filter( "mce_external_plugins",     array(&$this, "add_mce_button_script") );
+    		add_filter( 'mce_buttons',              array(&$this, 'register_mce_button') );
+    	}
+    	
+    }
+    
+/**	=============================
+    *
+    * MCE - add button scripts
+    *
+    ============================= */
+    
+    function add_mce_button_script($plugin_array) {
+        
+       	$plugin_array['mwi_sc_button'] = $this->plugin_url . 'assets/admin/js/shortcode-button.js';
+       	return $plugin_array;
+       	
+    }
+
+/**	=============================
+    *
+    * MCE - register button
+    *
+    ============================= */
+    
+    function register_mce_button($buttons) {
+        
+       array_push($buttons, "mwi_sc_button");
+       return $buttons;
+       
+    }
+
+/**	=============================
+    *
+    * MCE - add button styles
+    *
+    ============================= */
+    
+    function add_mce_button_css() {
+        
+    	wp_enqueue_style( 'mwi_sc_button', $this->plugin_url . 'assets/admin/css/shortcode-button.css' );
+    	
+    }
+    	
 /**	=============================
     *
     * Frontend Scripts
@@ -406,15 +510,19 @@ class jck_mwi {
     
     public function active_addons() {
         
-        $activeAddons = array();
+        $active_addons = array();
+        $active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
         
-        if ( in_array( 'mwi-shortcodes/mwi-shortcodes.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) )
-            $activeAddons[] = 'mwi-shortcodes';
+        if ( in_array( 'mwi-shortcodes/mwi-shortcodes.php', $active_plugins ) )
+            $active_addons[] = 'mwi-shortcodes';
             
-        if( empty($activeAddons) )
+        if ( in_array( 'mwi-category-listing/mwi-category-listing.php', $active_plugins ) )
+            $active_addons[] = 'mwi-category-listing';
+            
+        if( empty($active_addons) )
             return false;
         
-        return $activeAddons;        
+        return $active_addons;        
     }
   
 }

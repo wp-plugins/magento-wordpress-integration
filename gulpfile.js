@@ -5,6 +5,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var concatCss = require('gulp-concat-css');
 var minifyCSS = require('gulp-minify-css');
+var autoprefixer = require('gulp-autoprefixer');
 
 var paths = {
     frontendscripts: ['source/frontend/js/**/*.js'],
@@ -30,6 +31,10 @@ var paths = {
 	gulp.task('frontendstyles', function () {
         return gulp.src(paths.frontendstyles)
             .pipe(sass())
+            .pipe(autoprefixer({
+                browsers: ['last 2 versions'],
+                cascade: false
+            }))
             .pipe(minifyCSS())
             .pipe(gulp.dest('assets/frontend/css'));
     });
@@ -46,6 +51,10 @@ var paths = {
         // Minify and copy all JavaScript (except vendor scripts)
         return gulp.src(paths.adminstyles)
             .pipe(sass())
+            .pipe(autoprefixer({
+                browsers: ['last 2 versions'],
+                cascade: false
+            }))
             .pipe(minifyCSS())
             .pipe(gulp.dest('assets/admin/css'));
 	});

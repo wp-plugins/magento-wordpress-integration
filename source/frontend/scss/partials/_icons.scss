@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "mwi";
+  src:url("../fonts/mwi.eot");
+  src:url("../fonts/mwi.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/mwi.woff") format("woff"),
+    url("../fonts/mwi.ttf") format("truetype"),
+    url("../fonts/mwi.svg#mwi") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "mwi" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="mwi-"]:before,
+[class*=" mwi-"]:before {
+  font-family: "mwi" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mwi-caret-up-down:before {
+  content: "b";
+}
+.mwi-caret-down:before {
+  content: "e";
+}
+.mwi-caret-up:before {
+  content: "f";
+}
+.mwi-angle-double-left:before {
+  content: "a";
+}
+.mwi-angle-double-right:before {
+  content: "c";
+}
+.mwi-angle-left:before {
+  content: "d";
+}
+.mwi-angle-right:before {
+  content: "g";
+}

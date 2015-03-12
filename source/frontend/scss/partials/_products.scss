@@ -35,9 +35,12 @@
     }
 }
     
+    .entry-content .jck-product__img-link,
     .jck-product__img-link {
         display: block;
         margin: 0 0 $spacing+15;
+        border: none;
+        text-decoration: none;
     }
 
         .jck-product__img {
@@ -49,9 +52,11 @@
             display: block;
         }
     
+    .entry-content .jck-product__title-link,
     .jck-product__title-link {
         display: block;
         margin: 0 0 $spacing;
+        border: none;
     }
     
     .jck-product__description {
