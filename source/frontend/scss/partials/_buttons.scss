@@ -1,3 +1,4 @@
+a.jck-product-btn,
 button.jck-product-btn {
     background: $black;
     border: none;
@@ -14,16 +15,18 @@ button.jck-product-btn {
     font-weight: normal;
     margin: $spacing 0 0;
     font-size: 1em;
+    -webkit-font-smoothing: antialiased;
     
     &:hover {
-       background: lighten($black, 25%); 
+        color: $white;
+        background: lighten($black, 25%); 
     }
     
     &--turquoise {
         background: $turquoise;
         
         &:hover {
-           background: darken($turquoise, 10%); 
+            background: darken($turquoise, 10%); 
         }
     }
     
@@ -31,7 +34,7 @@ button.jck-product-btn {
         background: $green;
         
         &:hover {
-           background: darken($green, 10%); 
+            background: darken($green, 10%); 
         }
     }
     
@@ -39,7 +42,7 @@ button.jck-product-btn {
         background: $blue;
         
         &:hover {
-           background: darken($blue, 10%); 
+            background: darken($blue, 10%); 
         }
     }
     
@@ -47,7 +50,7 @@ button.jck-product-btn {
         background: $purple;
         
         &:hover {
-           background: darken($purple, 10%); 
+            background: darken($purple, 10%); 
         }
     }
     
@@ -55,7 +58,7 @@ button.jck-product-btn {
         background: $dark-grey;
         
         &:hover {
-           background: darken($dark-grey, 10%); 
+            background: darken($dark-grey, 10%); 
         }
     }
     
@@ -63,7 +66,7 @@ button.jck-product-btn {
         background: $yellow;
         
         &:hover {
-           background: darken($yellow, 5%); 
+            background: darken($yellow, 5%); 
         }
     }
     
@@ -71,7 +74,7 @@ button.jck-product-btn {
         background: $orange;
         
         &:hover {
-           background: darken($orange, 10%); 
+            background: darken($orange, 10%); 
         }
     }
     
@@ -79,7 +82,7 @@ button.jck-product-btn {
         background: $red;
         
         &:hover {
-           background: darken($red, 10%); 
+            background: darken($red, 10%); 
         }
     }
     
@@ -88,7 +91,8 @@ button.jck-product-btn {
         color: $black;
         
         &:hover {
-           background: darken($light-grey, 10%); 
+            color: $white;
+            background: darken($light-grey, 10%); 
         }
     }
     
@@ -96,7 +100,7 @@ button.jck-product-btn {
         background: $grey;
         
         &:hover {
-           background: darken($grey, 10%); 
+            background: darken($grey, 10%); 
         }
     }
 }

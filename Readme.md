@@ -18,9 +18,7 @@ Add Ons
 
 There are also a number of add-ons available for MWI, these are:
 
-*	**[Responsive Product Slider](http://www.mwi-plugin.com/add-ons/responsive-product-slider/)** This add-on allows you to display any number of products from a Magento category in a responsive slider, using a shortcode.
-*	**[Shortcodes & Widgets](http://www.mwi-plugin.com/add-ons/shortcodes-widgets/)** This add-on allows you to display products on your WordPress posts and pages using a very simple shortcode. It also comes with a widget for displaying products from a Magento category.
-*	**[Category Specific Widget](http://www.mwi-plugin.com/add-ons/category-specific-widget/)** The Category Specific add-on allows you to associate a Magento category with a WordPress category, so relevant products can be displayed within WordPress category or post pages.
+*	**[Shortcodes](http://bit.ly/1BAEynI)** Use the shortcode button to *insert products*, *layout blocks*, and *static blocks* in your WordPress editor.
 
 Useful Links
 ============

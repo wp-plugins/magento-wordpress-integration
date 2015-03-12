@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMU
 Tags: magento,wordpress,block,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
 Tested up to: 4.1
-Stable tag: 3.1.3
+Stable tag: 3.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,9 +26,7 @@ The Magento WordPress Integration Plugin allows you to to the following:
 
 There are also a number of add-ons available for MWI, these are:
 
-*	**[Responsive Product Slider](http://www.mwi-plugin.com/add-ons/responsive-product-slider/)** This add-on allows you to display any number of products from a Magento category in a responsive slider, using a shortcode.
-*	**[Shortcodes & Widgets](http://www.mwi-plugin.com/add-ons/shortcodes-widgets/)** This add-on allows you to display products on your WordPress posts and pages using a very simple shortcode. It also comes with a widget for displaying products from a Magento category.
-*	**[Category Specific Widget](http://www.mwi-plugin.com/add-ons/category-specific-widget/)** The Category Specific add-on allows you to associate a Magento category with a WordPress category, so relevant products can be displayed within WordPress category or post pages.
+*	**[Shortcodes](http://bit.ly/1BAEynI)** Use the shortcode button to *insert products*, *layout blocks*, and *static blocks* in your WordPress editor.
 
 =Useful Links=
 
@@ -57,19 +55,25 @@ Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/d
 
 == Changelog ==
 
+= 3.1.4 (25/01/15) =
+[update] Move MCE button to main plugin so it can be shared
+[update] Add helpers class
+[update] Add admin js for cat-listing shortcode add-on
+[update] Add styles for pagination
+
 = 3.1.3 (01/01/15) =
-* [update] Recreate addon styles and assets folder structure
-* [update] New styles for new addons
-* [update] Remove and reorganise assets
+[update] Recreate addon styles and assets folder structure
+[update] New styles for new addons
+[update] Remove and reorganise assets
 
 = 3.1.2 =
-* [update] Check for valid functions.php to reduce errors from occuring
+[update] Check for valid functions.php to reduce errors from occuring
 
 = 3.1.1 =
-* [readme] Updated readme
+[readme] Updated readme
 
 = 3.1.0 =
-* [update] Updated plugin structure and refined coding
+[update] Updated plugin structure and refined coding
 
 = 3.0.0 =
 * Moved add-ons to their own plugins, available via download.
