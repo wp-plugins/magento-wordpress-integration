@@ -1,0 +1,43 @@
+@mixin vendor-prefix($name, $argument) {
+    -webkit-#{$name}: #{$argument};
+    -ms-#{$name}: #{$argument};
+    -moz-#{$name}: #{$argument};
+    -o-#{$name}: #{$argument};
+    #{$name}: #{$argument};
+}
+
+@mixin pagination-color($color, $alt: #ffffff) {
+    .mwi-pagination-item {
+        background: $color;
+        color: $alt;
+        border: none;
+        line-height: 28px;
+        
+        &--active,
+        &:hover,
+        &:active,
+        &:focus {
+            font-weight: normal;
+            color: $alt;
+            background: darken($color, 10%);
+            padding: 0;
+            border: none;
+        }
+    }
+    
+    .entry-content & .mwi-pagination li,
+    .mwi-pagination li {
+        
+        &.active {
+            background: darken($color, 10%);
+        }
+        
+        a {
+            &:hover {
+                color: $alt;
+                background: darken($color, 10%);
+            } 
+        }
+        
+    }
+}
