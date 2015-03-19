@@ -9,10 +9,10 @@
 		        <strong>Shortcodes</strong> &mdash; <a href="http://bit.ly/1GKrOiP" target="_blank">Buy Now for $18</a><br>
 		        Use the shortcode button to <em>insert products</em>, <em>layout blocks</em>, and <em>static blocks</em> in your WordPress editor.
             </li>
-            <!--li>
-		        <strong>Category Listing</strong> &mdash; <a href="http://bit.ly/1GKrOiP" target="_blank">Buy Now for $18</a><br>
+            <li>
+		        <strong>Category Listing</strong> &mdash; <a href="http://bit.ly/1BTfuIB" target="_blank">Buy Now for $20</a><br>
 		        Use the shortcode button to insert a <em>paginated category listing</em> of your Magento products in your WordPress editor.
-            </li-->
+            </li>
 		</ul>
 	
 		<h3><?php _e('Documentation', $jck_mwi->slug); ?></h3>
