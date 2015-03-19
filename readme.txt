@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMU
 Tags: magento,wordpress,block,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
 Tested up to: 4.1
-Stable tag: 3.1.10
+Stable tag: 3.1.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,13 +19,10 @@ The Magento WordPress Integration Plugin allows you to to the following:
 *   Bring out any of the default Magento Blocks in your WordPress theme.
 *   Bring out any Magento blocks that you have created yourself.
 *   Bring out any static blocks that you have made in your Magento admin area.
-*   Show Magento products on a WordPress post or page by using the shortcode add-on.
-*   Show products from any category using the widget add-on.
 
 =Add Ons=
 
-There are also a number of add-ons available for MWI, these are:
-
+*	**[Category Listing](http://bit.ly/1Evvnni)** Use the shortcode button to *insert a paginated category listing* of your Magento products in your WordPress editor.
 *	**[Shortcodes](http://bit.ly/1BAEynI)** Use the shortcode button to *insert products*, *layout blocks*, and *static blocks* in your WordPress editor.
 
 =Useful Links=
@@ -54,6 +51,9 @@ Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/d
 Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/documentation/faq/) for frequently asked questions.
 
 == Changelog ==
+
+= 3.1.11 (19/03/15) =
+* [add-on] NEW! Category Listing add-on now available
 
 = 3.1.10 (13/03/15) =
 * [assets] Attempting assets deployment
