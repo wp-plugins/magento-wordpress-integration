@@ -3,8 +3,8 @@ Contributors: jamesckemp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NFBMUSAPCTF88&lc=US&item_name=James%20Kemp&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: magento,wordpress,block,integration,sessions,static blocks,magento cart,cart
 Requires at least: 3.0
-Tested up to: 4.1
-Stable tag: 3.1.11
+Tested up to: 4.2.2
+Stable tag: 3.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,9 @@ Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/d
 Please visit the [Magento Wordpress Integration website](http://mwi-plugin.com/documentation/faq/) for frequently asked questions.
 
 == Changelog ==
+
+= 3.2.0 (12/06/15) =
+* [fix] Change of version number
 
 = 3.1.11 (19/03/15) =
 * [add-on] NEW! Category Listing add-on now available
