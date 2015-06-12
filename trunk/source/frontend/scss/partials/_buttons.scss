@@ -1,0 +1,106 @@
+a.jck-product-btn,
+button.jck-product-btn {
+    background: $black;
+    border: none;
+    color: #fff;
+    display: inline-block;
+    padding: 10px 24px;
+    text-decoration: none;
+    outline: none;
+    color: $white;
+    @include vendor-prefix(transition, all 0.2s);
+    @include vendor-prefix(border-radius, 2px);
+    @include vendor-prefix(box-shadow, none);
+    @include vendor-prefix(text-shadow, none);
+    font-weight: normal;
+    margin: $spacing 0 0;
+    font-size: 1em;
+    -webkit-font-smoothing: antialiased;
+    
+    &:hover {
+        color: $white;
+        background: lighten($black, 25%); 
+    }
+    
+    &--turquoise {
+        background: $turquoise;
+        
+        &:hover {
+            background: darken($turquoise, 10%); 
+        }
+    }
+    
+    &--green {
+        background: $green;
+        
+        &:hover {
+            background: darken($green, 10%); 
+        }
+    }
+    
+    &--blue {
+        background: $blue;
+        
+        &:hover {
+            background: darken($blue, 10%); 
+        }
+    }
+    
+    &--purple {
+        background: $purple;
+        
+        &:hover {
+            background: darken($purple, 10%); 
+        }
+    }
+    
+    &--dark-grey {
+        background: $dark-grey;
+        
+        &:hover {
+            background: darken($dark-grey, 10%); 
+        }
+    }
+    
+    &--yellow {
+        background: $yellow;
+        
+        &:hover {
+            background: darken($yellow, 5%); 
+        }
+    }
+    
+    &--orange {
+        background: $orange;
+        
+        &:hover {
+            background: darken($orange, 10%); 
+        }
+    }
+    
+    &--red {
+        background: $red;
+        
+        &:hover {
+            background: darken($red, 10%); 
+        }
+    }
+    
+    &--light-grey {
+        background: $light-grey;
+        color: $black;
+        
+        &:hover {
+            color: $white;
+            background: darken($light-grey, 10%); 
+        }
+    }
+    
+    &--grey {
+        background: $grey;
+        
+        &:hover {
+            background: darken($grey, 10%); 
+        }
+    }
+}
